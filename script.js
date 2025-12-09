@@ -319,7 +319,9 @@ document.addEventListener("DOMContentLoaded", () => {
     setupTabSwitching();
     setupCostEstimator();
 
+    // Cek tombol antrean
     const queueBtn = document.getElementById("takeQueueBtn");
+    
     if (queueBtn) {
         queueBtn.addEventListener("click", () => {
             const num = document.getElementById("queueNumberCard");
@@ -327,20 +329,47 @@ document.addEventListener("DOMContentLoaded", () => {
             const status = document.getElementById("queueStatusCard");
             const headStatus = document.getElementById("queueStatusHeader");
             const terapiTitle = document.getElementById("terapiTitle");
-
-            num.textContent = "A-005";
-            headNum.textContent = "A-005";
+    
+            // --- LOGIKA BARU: AUTO INCREMENT (Nomor Nambah Terus) ---
+            
+            // 1. Ambil nomor terakhir dari LocalStorage (memori browser)
+            // Jika belum ada, anggap saja mulai dari 0
+            let lastQueue = localStorage.getItem("novaQueueNumber");
+            let currentQueue = lastQueue ? parseInt(lastQueue) : 0;
+    
+            // 2. Tambah 1
+            currentQueue = currentQueue + 1;
+    
+            // 3. Simpan lagi ke memori biar browser ingat
+            localStorage.setItem("novaQueueNumber", currentQueue);
+    
+            // 4. Format jadi A-00X (Contoh: 1 jadi A-001, 12 jadi A-012)
+            const formattedQueue = "A-" + String(currentQueue).padStart(3, '0');
+    
+            // ---------------------------------------------------------
+    
+            // Tampilkan ke layar
+            num.textContent = formattedQueue;
+            headNum.textContent = formattedQueue;
+            
             status.textContent = "Menunggu Dipanggil";
             headStatus.textContent = "Antrean Aktif";
+    
+            // Efek denyut
             num.classList.add("queue-pulse");
             setTimeout(() => num.classList.remove("queue-pulse"), 600);
-
+    
+            // Pindah halaman dengan animasi transisi
             if (window.showSection) {
                 window.showSection("terapi");
             }
+            
+            // Mulai terapi napas
             startBreathing();
+    
+            // Update judul terapi
             if (terapiTitle) {
-                terapiTitle.textContent = `Menunggu Antrean ${num.textContent}... Silakan Rileks.`;
+                terapiTitle.textContent = `Menunggu Antrean ${formattedQueue}... Silakan Rileks.`;
             }
         });
     }
