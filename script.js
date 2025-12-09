@@ -33,7 +33,7 @@ const doctors = [
 ];
 
 // =============================
-// 2. DATA LAYANAN (COPYWRITING PSIKOSOMATIS)
+// 2. DATA LAYANAN
 // =============================
 const services = [
     { id: "burnout", name: "Integrasi Umum & Burnout", category: "Fisik & Mental", price: 120000 },
@@ -46,13 +46,12 @@ const services = [
     { id: "nutrisi", name: "Nutrisi Mood & Energi", category: "Gizi Klinik", price: 175000 }
 ];
 
-// Helper Format Rupiah
 const formatRupiah = (value) => {
     return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(value);
 };
 
 // =============================
-// 3. RENDER FUNCTIONS (LIGHT MODE STYLE)
+// 3. RENDER FUNCTIONS
 // =============================
 const renderDoctors = () => {
     const list = document.getElementById("doctorList");
@@ -85,7 +84,6 @@ const renderServices = () => {
     tbody.innerHTML = "";
     select.innerHTML = "";
     services.forEach((s) => {
-        // Table Row
         const tr = document.createElement("tr");
         tr.className = "hover:bg-sage-50 transition-colors";
         tr.innerHTML = `
@@ -95,7 +93,6 @@ const renderServices = () => {
             </td>
             <td class="px-4 py-3 text-right font-bold text-sage-600">${formatRupiah(s.price)}</td>`;
         tbody.appendChild(tr);
-        // Select Option
         const opt = document.createElement("option");
         opt.value = s.id;
         opt.textContent = `${s.name} (${formatRupiah(s.price)})`;
@@ -103,61 +100,75 @@ const renderServices = () => {
     });
 };
 
-// =============================
-// 4. SPA SYSTEM (TAB SWITCHING)
-// =============================
+// =============================================
+// 4. SPA SYSTEM (UPDATED: WITH VIEW TRANSITION)
+// =============================================
 const setupTabSwitching = () => {
     const navLinks = document.querySelectorAll(".nav-link");
     const sections = document.querySelectorAll(".spa-section");
-    const quickBtns = document.querySelectorAll(".quick-nav"); // Tombol di Hero
+    const quickBtns = document.querySelectorAll(".quick-nav"); 
 
-        const showSection = (targetId) => {
+    // A. Fungsi Update DOM
+    const updateDOM = (targetId) => {
+        // 1. Update Section
         sections.forEach(sec => {
             if (sec.id === targetId) {
                 sec.classList.remove("hidden");
-                setTimeout(() => {
-                    sec.classList.remove("opacity-0", "translate-y-2");
-                    sec.classList.add("opacity-100", "translate-y-0");
-                }, 10);
             } else {
-                sec.classList.add("opacity-0", "translate-y-2");
-                sec.classList.remove("opacity-100", "translate-y-0");
-                setTimeout(() => sec.classList.add("hidden"), 300);
+                sec.classList.add("hidden");
             }
         });
+
+        // 2. Update Navigasi
         navLinks.forEach(link => {
-            link.classList.toggle("tab-active", link.dataset.target === targetId);
-            // Reset text colors
-            if (link.dataset.target === targetId) {
+            const isActive = link.dataset.target === targetId;
+            link.classList.toggle("tab-active", isActive);
+            
+            // Logic pewarnaan teks
+            if (isActive) {
                 link.classList.remove("text-sage-600");
+                const icon = link.querySelector("i");
+                if(icon) icon.classList.remove("text-sage-600");
             } else {
                 link.classList.add("text-sage-600");
             }
         });
+        
+        window.scrollTo(0, 0);
     };
 
-    // Expose untuk fitur lain (antrean, triage)
+    // B. Fungsi Eksekusi Transisi
+    const showSection = (targetId) => {
+        if (!document.startViewTransition) {
+            updateDOM(targetId);
+            return;
+        }
+        document.startViewTransition(() => {
+            updateDOM(targetId);
+        });
+    };
+
     window.showSection = showSection;
 
-
-    // Event Listeners Navbar
+    // C. Event Listeners
     navLinks.forEach(link => {
         link.addEventListener("click", (e) => {
             e.preventDefault();
-            showSection(link.dataset.target);
+            const btn = link.closest("button"); // Handle klik pada icon/text dalam button
+            if(btn) showSection(btn.dataset.target);
         });
     });
 
-    // Event Listeners Quick Buttons (Hero)
-    quickBtns.forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            showSection(btn.dataset.target);
+    if(quickBtns) {
+        quickBtns.forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                showSection(btn.dataset.target);
+            });
         });
-    });
+    }
 
-    // Default View
-    showSection("beranda");
+    updateDOM("beranda");
 };
 
 // =============================
@@ -173,7 +184,6 @@ const setupCostEstimator = () => {
         total: document.getElementById("estimateTotal"),
         detail: document.getElementById("estimateDetail")
     };
-
     if (!els.btn) return;
 
     const calculate = () => {
@@ -184,15 +194,15 @@ const setupCostEstimator = () => {
         let note = "";
 
         if (els.payment.value === "bpjs") {
-            subtotal *= 0.15; // Diskon BPJS (Simulasi)
+            subtotal *= 0.15;
             note = "Dicover BPJS (Bayar Admin 15%)";
         } else if (els.payment.value === "asuransi") {
-            subtotal *= 0.5; // Diskon Asuransi
+            subtotal *= 0.5;
             note = "Dicover Asuransi 50%";
         }
 
         if (els.check.checked) {
-            subtotal += (s.price * 0.7); // Tambah kontrol
+            subtotal += (s.price * 0.7);
             note += " + Kontrol Lanjutan";
         }
 
@@ -201,7 +211,6 @@ const setupCostEstimator = () => {
     };
 
     els.btn.addEventListener("click", calculate);
-    // Auto calc on change
     [els.select, els.qty, els.payment, els.check].forEach(e => e.addEventListener("change", calculate));
 };
 
@@ -260,33 +269,27 @@ function analyzeSymptoms() {
     const resultBox = document.getElementById("recommendationResult");
 
     if (!physicalEl || !mentalEl || !resultBox) return;
-
     const physical = physicalEl.value;
     const mental = mentalEl.value;
 
-    // Jika belum memilih keduanya, jangan tampilkan apapun
     if (!physical || !mental) {
         resultBox.classList.remove("hidden");
         resultBox.innerHTML = `
             <div class="p-3 rounded-xl border border-amber-200 bg-amber-50 text-xs text-amber-800">
                 Silakan pilih <strong>keluhan fisik</strong> dan <strong>kondisi pikiran</strong> terlebih dahulu.
-            </div>
-        `;
+            </div>`;
         return;
     }
 
     let title = "Konsultasi Screening Umum";
-    let desc =
-        "Tim front doctor kami akan melakukan pemeriksaan awal untuk memetakan hubungan antara keluhan fisik dan beban mental Anda.";
+    let desc = "Tim front doctor kami akan melakukan pemeriksaan awal untuk memetakan hubungan antara keluhan fisik dan beban mental Anda.";
 
     if (physical === "maag" && mental === "stres") {
         title = "Paket Gastric-Calm (Internis + Mindfulness)";
-        desc =
-            "Keluhan lambung yang berkaitan dengan stres sering kali membutuhkan kolaborasi dokter penyakit dalam dan sesi mindfulness singkat untuk menurunkan respons cemas tubuh.";
+        desc = "Keluhan lambung yang berkaitan dengan stres sering kali membutuhkan kolaborasi dokter penyakit dalam dan sesi mindfulness singkat.";
     } else if (physical === "gigi" && mental === "cemas") {
         title = "Paket Dental-Relief (Dokter Gigi TMJ + Terapi Napas)";
-        desc =
-            "Bruxism atau gigi menggeretak biasanya muncul saat cemas. Kombinasi evaluasi sendi rahang (TMJ) dan latihan napas terstruktur membantu merilekskan otot rahang.";
+        desc = "Bruxism atau gigi menggeretak biasanya muncul saat cemas. Kombinasi evaluasi sendi rahang (TMJ) dan latihan napas terstruktur membantu merilekskan otot rahang.";
     }
 
     resultBox.classList.remove("hidden");
@@ -295,25 +298,17 @@ function analyzeSymptoms() {
             <p class="text-[11px] font-semibold text-sage-600 uppercase tracking-wide mb-1">Rekomendasi Awal</p>
             <p class="font-semibold text-sage-900 mb-1">${title}</p>
             <p class="text-xs text-gray-500 mb-2">${desc}</p>
-            <button
-                type="button"
-                id="priorityQueueBtn"
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-sage-600 text-white text-xs font-semibold hover:bg-sage-700 transition"
-            >
-                <i class="fa-solid fa-bell"></i>
-                Ambil Antrean Prioritas
+            <button type="button" id="priorityQueueBtn" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-sage-600 text-white text-xs font-semibold hover:bg-sage-700 transition">
+                <i class="fa-solid fa-bell"></i> Ambil Antrean Prioritas
             </button>
-        </div>
-    `;
+        </div>`;
 
-    // Tombol antrean prioritas → reuse logika antrean utama
     const priorityBtn = document.getElementById("priorityQueueBtn");
     const queueBtn = document.getElementById("takeQueueBtn");
     if (priorityBtn && queueBtn) {
         priorityBtn.addEventListener("click", () => queueBtn.click());
     }
 }
-
 
 // =============================
 // INIT
@@ -324,7 +319,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setupTabSwitching();
     setupCostEstimator();
 
-    // Setup Queue Button
     const queueBtn = document.getElementById("takeQueueBtn");
     if (queueBtn) {
         queueBtn.addEventListener("click", () => {
@@ -334,29 +328,23 @@ document.addEventListener("DOMContentLoaded", () => {
             const headStatus = document.getElementById("queueStatusHeader");
             const terapiTitle = document.getElementById("terapiTitle");
 
-            // Nomor antrean (sementara fixed A-005)
             num.textContent = "A-005";
             headNum.textContent = "A-005";
             status.textContent = "Menunggu Dipanggil";
             headStatus.textContent = "Antrean Aktif";
-
             num.classList.add("queue-pulse");
             setTimeout(() => num.classList.remove("queue-pulse"), 600);
 
-            // Pindah otomatis ke tab Terapi + mulai terapi napas
             if (window.showSection) {
                 window.showSection("terapi");
             }
             startBreathing();
-
-            // Update judul terapi sesuai requirement
             if (terapiTitle) {
                 terapiTitle.textContent = `Menunggu Antrean ${num.textContent}... Silakan Rileks.`;
             }
         });
     }
 
-    // Setup Smart Triage Button
     const analyzeBtn = document.getElementById("analyzeBtn");
     if (analyzeBtn) {
         analyzeBtn.addEventListener("click", analyzeSymptoms);
