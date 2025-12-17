@@ -63,7 +63,7 @@ const renderDoctors = () => {
         card.innerHTML = `
             <div class="flex-shrink-0">
                 <div class="h-16 w-16 rounded-xl overflow-hidden bg-sage-50">
-                    <img src="${doc.photo}" class="h-full w-full object-cover" />
+                    <img src="${doc.photo}" alt="Foto dr. ${doc.name}" class="h-full w-full object-cover" />
                 </div>
             </div>
             <div class="flex-1 min-w-0">
