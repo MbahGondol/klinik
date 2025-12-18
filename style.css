@@ -1,69 +1,54 @@
-/* Custom scrollbar (Warna Sage) */
+/* =========================================
+   1. SCROLLBAR 
+   ========================================= */
 .custom-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: #84A98C #F4F7F5;
+    scrollbar-color: #84A98C transparent;
 }
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #84A98C; border-radius: 999px; }
 
-.custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(244, 247, 245, 0.8);
-    border-radius: 999px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #84A98C; /* Sage-500 */
-    border-radius: 999px;
-}
-
-/* Glassmorphism Fajri Style (Light/White) */
+/* =========================================
+   2. GLASSMORPHISM
+   ========================================= */
 .glass-card {
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 40px -10px rgba(132, 169, 140, 0.15);
 }
 
-/* Active Nav Tab (Sage Gradient) */
+/* =========================================
+   3. NAVIGASI
+   ========================================= */
 .nav-link.tab-active {
-    background: #52796F; /* Sage-600 */
+    background: #52796F;
     color: white !important;
-    box-shadow: 0 4px 15px rgba(82, 121, 111, 0.3);
+    box-shadow: 0 4px 15px rgba(82, 121, 111, 0.25);
+    transform: translateY(-1px);
 }
 
-/* Hover Effects */
-.card-hover-soft {
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-}
-
-.card-hover-soft:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(132, 169, 140, 0.15);
-    border-color: #84A98C !important;
-    background: white;
-}
-
-/* Queue Pulse Animation */
-.queue-pulse {
-    animation: queuePulse 0.6s ease-out;
-}
-
+/* =========================================
+   4. ANIMASI ANTREAN 
+   ========================================= */
 @keyframes queuePulse {
     0% { transform: scale(0.9); color: #354F52; }
-    50% { transform: scale(1.1); color: #52796F; }
+    50% { transform: scale(1.05); color: #52796F; } 
     100% { transform: scale(1); color: #354F52; }
 }
+.queue-pulse { animation: queuePulse 0.6s ease-out; }
 
-/* UPDATED: VIEW TRANSITION API (Untuk Transisi Halaman Halus) */
-
-/* 1. Definisikan Animasi Keyframes */
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* =========================================
+   5. VIEW TRANSITIONS 
+   ========================================= */
+@keyframes fade-in-up-short {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+    animation: fade-in-up-short 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 @keyframes fade-out {
@@ -71,76 +56,37 @@
   to { opacity: 0; }
 }
 
-/* 2. Atur Perilaku Transisi Halaman (Root) */
-::view-transition-old(root) {
-  /* Halaman lama keluar: Fade Out cepat */
-  animation: 90ms cubic-bezier(0.4, 0, 1, 1) both fade-out;
-}
+/* Konfigurasi API View Transition Browser */
+::view-transition-old(root) { animation: 90ms ease-out both fade-out; }
+::view-transition-new(root) { animation: 300ms cubic-bezier(0.2, 0.8, 0.2, 1) both fade-in-up-short; }
 
-::view-transition-new(root) {
-  /* Halaman baru masuk: Fade In + Slide Up pelan */
-  animation: 210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in-up;
-}
-
-/* EFEK GLOW UNTUK TERAPI */
-.breathing-glow {
-    box-shadow: 0 0 60px 20px rgba(132, 169, 140, 0.4); /* Cahaya hijau lembut */
-}
-
-/* 3. Nonaktifkan animasi untuk user yang sensitif motion */
+/* Aksesibilitas: Matikan animasi jika user tidak suka gerakan */
 @media (prefers-reduced-motion) {
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
-  }
+    *, ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) {
+        animation: none !important;
+        transition: none !important;
+    }
 }
 
-@keyframes fade-in-up-short {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* =========================================
+   6. ANIMASI TERAPI NAPAS
+   ========================================= */
+/* Ini kode kunci agar lingkaran membesar/mengecil dengan mulus */
+.breathe-transition {
+    transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1), opacity 4s ease-in-out !important;
+    will-change: transform, opacity;
 }
 
-.animate-fade-in-up {
-    animation: fade-in-up-short 0.4s ease-out forwards;
+/* Rotasi pelan untuk garis putus-putus */
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+    animation: spin-slow 12s linear infinite;
 }
 
-/* ANIMASI PERNAPASAN */
-@keyframes breathe-inhale {
-    0% { transform: scale(1); opacity: 0.2; box-shadow: 0 0 10px rgba(132, 169, 140, 0.2); }
-    50% { transform: scale(1.05); opacity: 0.5; box-shadow: 0 0 20px rgba(132, 169, 140, 0.4); }
-    100% { transform: scale(1.1); opacity: 0.6; box-shadow: 0 0 25px rgba(132, 169, 140, 0.6); }
-}
-
-@keyframes breathe-exhale {
-    0% { transform: scale(1.1); opacity: 0.6; box-shadow: 0 0 25px rgba(132, 169, 140, 0.6); }
-    50% { transform: scale(1.02); opacity: 0.4; box-shadow: 0 0 15px rgba(132, 169, 140, 0.3); }
-    100% { transform: scale(1); opacity: 0.2; box-shadow: 0 0 10px rgba(132, 169, 140, 0.2); }
-}
-
-@keyframes breathe-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-
-.breathe-inhale {
-    animation: breathe-inhale 4s ease-in-out;
-}
-
-.breathe-exhale {
-    animation: breathe-exhale 4s ease-in-out;
-}
-
-.breathe-pulse {
-    animation: breathe-pulse 2s ease-in-out infinite;
-}
-
-/* Animasi untuk lingkaran dalam */
-@keyframes inner-breathe {
-    0%, 100% { transform: scale(1); opacity: 0.3; }
-    50% { transform: scale(1.1); opacity: 0.4; }
-}
-
-.inner-breathe-active {
-    animation: inner-breathe 4s ease-in-out infinite;
+/* Glow Effect saat bernapas */
+.breathing-glow {
+    box-shadow: 0 0 60px 20px rgba(132, 169, 140, 0.4);
 }
