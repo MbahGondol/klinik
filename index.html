@@ -289,9 +289,13 @@
             </div>
             <div class="flex flex-col items-center justify-center py-4">
                 <div class="relative w-64 h-64 flex items-center justify-center cursor-pointer group select-none" onclick="startBreathing()">
-                    <div id="breathe-circle" class="absolute inset-0 bg-sage-400 rounded-full opacity-20 transform scale-100 transition-all duration-[4000ms] ease-in-out"></div>
+                    <div id="breathe-circle" class="absolute inset-0 bg-sage-500 rounded-full opacity-30 transform scale-100 transition-all duration-[4000ms] ease-in-out"></div>
                     
-                    <div class="absolute inset-4 border-2 border-sage-300 rounded-full border-dashed animate-[spin_12s_linear_infinite] opacity-60"></div>
+                    <!-- Lingkaran dalam untuk efek pulse -->
+                    <div id="inner-circle" class="absolute inset-8 bg-sage-400 rounded-full opacity-40 animate-pulse"></div>
+                    
+                    <!-- Partikel atau efek cahaya -->
+                    <div class="absolute inset-0 rounded-full border-2 border-sage-400 border-dashed animate-[spin_12s_linear_infinite] opacity-70"></div>
                     
                     <div class="z-10 text-center pointer-events-none">
                         <span id="breathe-text" class="block text-xl font-bold text-sage-800 transition-all duration-500">Mulai</span>
@@ -382,9 +386,34 @@
                             <i class="fa-solid fa-envelope text-sage-600"></i>
                             <p>halo@novaholistic.id</p>
                         </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-clock mt-1 text-sage-600"></i>
+                            <div>
+                                <p class="font-bold text-gray-800">Jam Kerja</p>
+                                <p>Senin - Jumat: 08.00 - 20.00 WIB</p>
+                                <p>Sabtu: 09.00 - 17.00 WIB</p>
+                                <p>Minggu: Tutup</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Social Media Links -->
+                    <div class="mt-6">
+                        <h3 class="text-lg font-semibold text-sage-900 mb-3">Ikuti Kami</h3>
+                        <div class="flex gap-4">
+                            <a href="https://facebook.com/novaholistic" target="_blank" class="w-10 h-10 bg-sage-100 hover:bg-sage-200 rounded-full flex items-center justify-center text-sage-600 hover:text-sage-700 transition-all duration-200 shadow-sm">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://instagram.com/novaholistic" target="_blank" class="w-10 h-10 bg-sage-100 hover:bg-sage-200 rounded-full flex items-center justify-center text-sage-600 hover:text-sage-700 transition-all duration-200 shadow-sm">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://wa.me/6281234567890" target="_blank" class="w-10 h-10 bg-sage-100 hover:bg-sage-200 rounded-full flex items-center justify-center text-sage-600 hover:text-sage-700 transition-all duration-200 shadow-sm">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <div class="bg-sage-100 rounded-2xl h-48 flex items-center justify-center text-sage-400 overflow-hidden shadow-inner border border-sage-200">
+                <div class="bg-sage-100 rounded-2xl h-64 md:h-80 flex items-center justify-center text-sage-400 overflow-hidden shadow-inner border border-sage-200">
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.052674706599!2d106.78135897586523!3d-6.256793661251347!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f1068df67a69%3A0x6b691060931495c2!2sGandaria%20City%20Mall!5e0!3m2!1sid!2sid!4v1708765432109!5m2!1sid!2sid" 
                         width="100%" 
