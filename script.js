@@ -1,6 +1,5 @@
-
 // =============================
-// 1. DATA DOKTER (MODERN & REAL)
+// 1. DATA DOKTER 
 // =============================
 const doctors = [
     {
@@ -37,14 +36,110 @@ const doctors = [
 // 2. DATA LAYANAN
 // =============================
 const services = [
-    { id: "burnout", name: "Integrasi Umum & Burnout", category: "Fisik & Mental", price: 120000 },
-    { id: "gerd", name: "Lambung & Kecemasan (GERD)", category: "Internal Medicine", price: 300000 },
-    { id: "dental", name: "Dental Stress Relief", category: "Gigi & Mulut", price: 250000 },
-    { id: "migrain", name: "Terapi Migrain & Leher", category: "Fisioterapi", price: 200000 },
-    { id: "mind", name: "Mind & Breath Therapy", category: "Mental Wellness", price: 150000 },
-    { id: "mcu", name: "Holistic Check-Up Lengkap", category: "Paket Lengkap", price: 650000 },
-    { id: "sleep", name: "Sleep Recovery Program", category: "Konsultasi", price: 280000 },
-    { id: "nutrisi", name: "Nutrisi Mood & Energi", category: "Gizi Klinik", price: 175000 }
+    { 
+        id: "burnout", 
+        name: "Integrasi Umum & Burnout", 
+        category: "Fisik & Mental", 
+        price: 120000,
+        icon: "fa-solid fa-battery-quarter", 
+        benefits: [
+            "Konsultasi Dokter Umum (30 Menit)",
+            "Screening Tingkat Stres Digital",
+            "Obat: Vitamin B-Complex & Penenang Herbal",
+            "Akses Ruang Hening 1 Jam"
+        ]
+    },
+    { 
+        id: "gerd", 
+        name: "Lambung & Kecemasan (GERD)", 
+        category: "Internal Medicine", 
+        price: 300000,
+        icon: "fa-solid fa-fire-burner", 
+        benefits: [
+            "Pemeriksaan Fisik Lambung",
+            "Sesi Hypnotherapy Singkat (Relaxation)",
+            "Obat: PPI (Lambung) & Anti-Cemas Dosis Rendah",
+            "Panduan Diet Anti-Inflamasi"
+        ]
+    },
+    { 
+        id: "dental", 
+        name: "Dental Stress Relief", 
+        category: "Gigi & Mulut", 
+        price: 250000,
+        icon: "fa-solid fa-tooth", 
+        benefits: [
+            "Pijat Relaksasi Otot Rahang (TMJ)",
+            "Cek Kondisi Gigi Gemeretak (Bruxism)",
+            "Therapy Music saat tindakan",
+            "Resep Muscle Relaxant (Jika perlu)"
+        ]
+    },
+    { 
+        id: "migrain", 
+        name: "Terapi Migrain & Leher", 
+        category: "Fisioterapi", 
+        price: 200000,
+        icon: "fa-solid fa-brain", 
+        benefits: [
+            "Fisioterapi Leher & Pundak (Ultrasound)",
+            "Akupresur Titik Fokus Sakit Kepala",
+            "Krim Analgesik Khusus",
+            "Edukasi Postur Kerja Ergonomis"
+        ]
+    },
+    { 
+        id: "mind", 
+        name: "Mind & Breath Therapy", 
+        category: "Mental Wellness", 
+        price: 150000,
+        icon: "fa-solid fa-wind", 
+        benefits: [
+            "Dipandu Praktisi Mindfulness Bersertifikat",
+            "Ruang Aromaterapi Lavender",
+            "Teh Herbal Penenang (Chamomile)",
+            "Rekaman Audio untuk Latihan di Rumah"
+        ]
+    },
+    { 
+        id: "mcu", 
+        name: "Holistic Check-Up Lengkap", 
+        category: "Paket Lengkap", 
+        price: 650000,
+        icon: "fa-solid fa-heart-pulse", 
+        benefits: [
+            "Cek Darah Lengkap & Tensi",
+            "Konsultasi Psikolog Klinis (60 Menit)",
+            "Laporan Kesehatan Fisik & Mental",
+            "Voucher Terapi Lanjutan 20%"
+        ]
+    },
+    { 
+        id: "sleep", 
+        name: "Sleep Recovery Program", 
+        category: "Konsultasi", 
+        price: 280000,
+        icon: "fa-solid fa-moon", 
+        benefits: [
+            "Analisa Pola Tidur (Sleep Hygiene)",
+            "Terapi Cahaya (Light Therapy)",
+            "Suplemen Melatonin Alami",
+            "Jurnal Tidur Digital"
+        ]
+    },
+    { 
+        id: "nutrisi", 
+        name: "Nutrisi Mood & Energi", 
+        category: "Gizi Klinik", 
+        price: 175000,
+        icon: "fa-solid fa-apple-whole", 
+        benefits: [
+            "Analisa Komposisi Tubuh",
+            "Meal Plan Pengatur Emosi (Mood Food)",
+            "Suplemen Gut-Health (Probiotik)",
+            "Resep Smoothie Anti-Stres"
+        ]
+    }
 ];
 
 const formatRupiah = (value) => {
@@ -58,19 +153,22 @@ const renderDoctors = () => {
     const list = document.getElementById("doctorList");
     if (!list) return;
     list.innerHTML = "";
-    doctors.forEach((doc) => {
+    doctors.forEach((doc) => { 
         const card = document.createElement("article");
-        card.className = "flex gap-4 p-4 rounded-2xl bg-white border border-sage-100 shadow-sm hover:shadow-md transition-all";
+        
+        card.className = "flex items-start gap-4 p-5 rounded-2xl bg-white/80 border border-white shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group";
+        
         card.innerHTML = `
-            <div class="flex-shrink-0">
-                <div class="h-16 w-16 rounded-xl overflow-hidden bg-sage-50">
-                    <img src="${doc.photo}" alt="Foto dr. ${doc.name}" class="h-full w-full object-cover" />
+            <div class="relative">
+                <div class="h-16 w-16 rounded-2xl overflow-hidden bg-sage-100 ring-2 ring-white shadow-md">
+                    <img src="${doc.photo}" class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 </div>
+                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 border-2 border-white rounded-full"></div>
             </div>
             <div class="flex-1 min-w-0">
-                <p class="text-sm font-bold text-sage-900 truncate">${doc.name}</p>
-                <p class="text-xs text-sage-600 truncate mb-2">${doc.specialist}</p>
-                <div class="flex items-center gap-2 text-[10px] text-gray-400">
+                <h4 class="font-bold text-sage-900 group-hover:text-sage-700 transition-colors">${doc.name}</h4>
+                <p class="text-xs font-medium text-sage-600 mb-2">${doc.specialist}</p>
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sage-50 border border-sage-100 text-[10px] text-sage-500">
                     <i class="fa-regular fa-clock"></i> ${doc.schedule}
                 </div>
             </div>`;
@@ -79,33 +177,69 @@ const renderDoctors = () => {
 };
 
 const renderServices = () => {
-    const tbody = document.getElementById("servicesTableBody");
+    const container = document.getElementById("servicesContainer"); 
     const select = document.getElementById("serviceSelect");
-    if (!tbody || !select) return;
     
-    tbody.innerHTML = "";
+    if (!container || !select) return;
+    
+    container.innerHTML = "";
     select.innerHTML = "";
     
     services.forEach((s) => {
-        const tr = document.createElement("tr");
-        tr.className = "hover:bg-sage-50 transition-colors border-b border-sage-50 last:border-0";
-        
-        tr.innerHTML = `
-            <td class="px-3 py-3 align-middle">
-                <p class="font-medium text-sage-900 text-xs sm:text-sm whitespace-normal leading-tight">
-                    ${s.name}
-                </p>
-                <p class="text-[10px] text-gray-400 mt-0.5 sm:hidden">${s.category}</p>
-            </td>
-            <td class="px-3 py-3 text-right align-middle">
-                <span class="font-bold text-sage-600 text-xs sm:text-sm whitespace-nowrap">
-                    ${formatRupiah(s.price)}
-                </span>
-            </td>`;
-            
-        tbody.appendChild(tr);
+        // Render Card
+        const benefitsHTML = s.benefits.map(item => `
+            <li class="flex items-start gap-2 text-[11px] text-gray-500 leading-snug">
+                <i class="fa-solid fa-check text-sage-500 mt-0.5 shrink-0 text-[10px]"></i>
+                <span>${item}</span>
+            </li>
+        `).join('');
 
-        // Bagian Dropdown
+        const card = document.createElement("div");
+        card.className = "flex flex-col p-5 rounded-2xl border border-sage-100 bg-white hover:border-sage-300 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer group h-full relative overflow-hidden";
+        
+        card.onclick = () => {
+             select.value = s.id;
+             const event = new Event('change');
+             select.dispatchEvent(event);
+             document.querySelectorAll('#servicesContainer > div').forEach(d => d.classList.remove('ring-2', 'ring-sage-500'));
+             card.classList.add('ring-2', 'ring-sage-500');
+        };
+
+        card.innerHTML = `
+            <div class="absolute top-0 right-0 w-24 h-24 bg-sage-50 rounded-bl-full -mr-4 -mt-4 opacity-50 group-hover:bg-sage-100 transition-colors"></div>
+
+            <div class="flex justify-between items-start mb-3 relative z-10">
+                <div class="h-10 w-10 rounded-xl bg-sage-50 flex items-center justify-center text-sage-600 group-hover:bg-sage-600 group-hover:text-white transition-colors shadow-sm">
+                    <i class="${s.icon} text-lg"></i>
+                </div>
+                <span class="text-[10px] font-bold tracking-wide text-nexus-teal bg-teal-50 px-2 py-1 rounded-lg border border-teal-100">
+                    ${s.category}
+                </span>
+            </div>
+
+            <div class="mb-4 relative z-10">
+                <h4 class="font-bold text-sage-900 text-sm mb-1">${s.name}</h4>
+                <p class="text-lg font-bold text-sage-700">${formatRupiah(s.price)}</p>
+            </div>
+
+            <div class="h-px w-full bg-sage-100 mb-4"></div>
+
+            <div class="flex-1 relative z-10">
+                <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Paket Termasuk:</p>
+                <ul class="space-y-2">
+                    ${benefitsHTML}
+                </ul>
+            </div>
+
+            <div class="mt-5 pt-3 border-t border-dashed border-sage-100">
+                <div class="w-full py-2 rounded-lg bg-sage-50 text-sage-600 text-xs font-bold text-center group-hover:bg-sage-600 group-hover:text-white transition-colors">
+                    Pilih Layanan Ini
+                </div>
+            </div>
+        `;
+        container.appendChild(card);
+
+        // Render Select Option
         const opt = document.createElement("option");
         opt.value = s.id;
         opt.textContent = `${s.name} (${formatRupiah(s.price)})`;
@@ -113,21 +247,14 @@ const renderServices = () => {
     });
 };
 
-// ==============
+// =============================================
 // 4. SPA SYSTEM
-// ==============
+// =============================================
 const setupTabSwitching = () => {
     const navLinks = document.querySelectorAll(".nav-link");
     const sections = document.querySelectorAll(".spa-section");
-    const quickBtns = document.querySelectorAll(".quick-nav"); 
 
-    // A. Fungsi Update DOM (Visual Change)
     const updateDOM = (targetId) => {
-        // 1. Validasi: Jika targetId tidak ada elemennya, default ke 'beranda'
-        const targetSection = document.getElementById(targetId);
-        if (!targetSection) targetId = "beranda";
-
-        // 2. Update Section Visibility
         sections.forEach(sec => {
             if (sec.id === targetId) {
                 sec.classList.remove("hidden");
@@ -136,12 +263,10 @@ const setupTabSwitching = () => {
             }
         });
 
-        // 3. Update Navigasi Active State
         navLinks.forEach(link => {
             const isActive = link.dataset.target === targetId;
             link.classList.toggle("tab-active", isActive);
             
-            // Logic pewarnaan teks spesifik kamu
             if (isActive) {
                 link.classList.remove("text-sage-600");
                 const icon = link.querySelector("i");
@@ -154,8 +279,7 @@ const setupTabSwitching = () => {
         window.scrollTo(0, 0);
     };
 
-    // B. Wrapper untuk Transisi (View Transition API)
-    const renderPage = (targetId) => {
+    const showSection = (targetId) => {
         if (!document.startViewTransition) {
             updateDOM(targetId);
             return;
@@ -165,60 +289,17 @@ const setupTabSwitching = () => {
         });
     };
 
-    // C. Event Listeners untuk Klik (Push State)
-    const handleNavClick = (e, targetId) => {
-        e.preventDefault();
-        
-        // Cek apakah kita sudah di halaman itu? Kalau iya, jangan pushState lagi
-        const currentHash = window.location.hash.replace("#", "") || "beranda";
-        if (currentHash === targetId) return;
+    window.showSection = showSection;
 
-        // Ubah URL dan simpan history
-        history.pushState({ page: targetId }, "", `#${targetId}`);
-        renderPage(targetId);
-    };
-
-    // Pasang Listener ke Navigasi Utama
     navLinks.forEach(link => {
         link.addEventListener("click", (e) => {
-            // Cari tombol terdekat jika yang diklik ikon/span
-            const btn = link.closest("button");
-            if(btn) handleNavClick(e, btn.dataset.target);
+            e.preventDefault();
+            const btn = link.closest("button"); 
+            if(btn) showSection(btn.dataset.target);
         });
     });
 
-    // Pasang Listener ke Quick Buttons (jika ada)
-    if(quickBtns) {
-        quickBtns.forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                const target = btn.dataset.target;
-                handleNavClick(e, target);
-            });
-        });
-    }
-
-    // D. Listener Tombol Back/Forward Browser (Pop State)
-    window.addEventListener("popstate", (event) => {
-        // Jika event.state ada, pakai itu. Jika tidak, ambil dari hash URL. Default 'beranda'
-        const targetId = event.state ? event.state.page : (window.location.hash.replace("#", "") || "beranda");
-        renderPage(targetId);
-    });
-
-    // E. Initial Load (Saat pertama kali web dibuka/refresh)
-    // Cek apakah ada hash di URL (misal: user buka link index.html#terapi)
-    const initialTarget = window.location.hash.replace("#", "") || "beranda";
-    
-    // Replace state awal agar history tidak null jika user langsung tekan back nanti
-    history.replaceState({ page: initialTarget }, "", window.location.hash || "#beranda");
-    
-    // Render halaman awal tanpa animasi transisi (biar instan)
-    updateDOM(initialTarget);
-    
-    // Ekspos fungsi ke global jika tombol antrean butuh redirect manual
-    window.showSection = (targetId) => {
-        history.pushState({ page: targetId }, "", `#${targetId}`);
-        renderPage(targetId);
-    };
+    updateDOM("beranda");
 };
 
 // =============================
@@ -253,7 +334,7 @@ const setupCostEstimator = () => {
 
         if (els.check.checked) {
             subtotal += (s.price * 0.7);
-            note += " + Kontrol Lanjutan";
+            note += note ? " + Kontrol Lanjutan" : "Kontrol Lanjutan";
         }
 
         els.total.textContent = formatRupiah(subtotal);
@@ -270,9 +351,8 @@ const setupCostEstimator = () => {
 let isBreathing = false;
 let breatheInterval;
 
-
-const breatheAudio = new Audio('nafas-manual.mp3'); // Pastikan file audio ada di lokasi yang benar
-breatheAudio.volume = 0.3; // Atur volume sesuai kebutuhan
+const breatheAudio = new Audio('nafas-manual.mp3'); 
+breatheAudio.volume = 0.3;
 
 function startBreathing() {
     const circle = document.getElementById('breathe-circle');
@@ -326,7 +406,7 @@ function startBreathing() {
 }
 
 // =============================
-// 7. SMART TRIAGE LOGIC
+// 7. SMART TRIAGE & QUEUE
 // =============================
 function analyzeSymptoms() {
     const physicalEl = document.getElementById("physicalSymptom");
@@ -337,7 +417,6 @@ function analyzeSymptoms() {
     const physical = physicalEl.value;
     const mental = mentalEl.value;
 
-    // Validasi
     if (!physical || !mental) {
         resultBox.classList.remove("hidden");
         resultBox.innerHTML = `
@@ -348,11 +427,11 @@ function analyzeSymptoms() {
         return;
     }
 
-    // --- LOGIKA CERDAS ---
+    // Logic Analisis 
     let diagnosis = "Gangguan Psikosomatis Umum";
     let desc = "Terdeteksi ketidakseimbangan antara respons tubuh terhadap beban pikiran.";
     let riskText = "Rendah";
-    let riskClass = "bg-sage-100 text-sage-600 border-sage-200"; // Default Hijau
+    let riskClass = "bg-sage-100 text-sage-600 border-sage-200"; 
     let recommendation = "Konsultasi Screening Umum";
     let doctorType = "Dokter Umum";
 
@@ -360,7 +439,7 @@ function analyzeSymptoms() {
         diagnosis = "Gastritis Psikosomatis";
         desc = "Stres memicu saraf vagus meningkatkan asam lambung secara drastis.";
         riskText = "Sedang";
-        riskClass = "bg-yellow-100 text-yellow-700 border-yellow-200"; // Kuning
+        riskClass = "bg-yellow-100 text-yellow-700 border-yellow-200"; 
         recommendation = "Paket Gastric-Calm";
         doctorType = "Internis + Hypnotherapy";
     } 
@@ -368,7 +447,7 @@ function analyzeSymptoms() {
         diagnosis = "Tension & Bruxism";
         desc = "Otot rahang dan leher menegang akibat penekanan emosi bawah sadar.";
         riskText = "Menengah";
-        riskClass = "bg-orange-100 text-orange-700 border-orange-200"; // Oranye
+        riskClass = "bg-orange-100 text-orange-700 border-orange-200"; 
         recommendation = "Terapi Dental-Relief";
         doctorType = "Dokter Gigi (TMJ)";
     }
@@ -376,7 +455,7 @@ function analyzeSymptoms() {
         diagnosis = "Cardiac Anxiety";
         desc = "Respons 'fight or flight' memacu jantung berlebih. Butuh penanganan segera.";
         riskText = "Tinggi";
-        riskClass = "bg-red-100 text-red-700 border-red-200"; // Merah
+        riskClass = "bg-red-100 text-red-700 border-red-200"; 
         recommendation = "Pemeriksaan Jantung & Pikiran";
         doctorType = "Kardiolog + Psikiater";
     }
@@ -392,7 +471,6 @@ function analyzeSymptoms() {
                     Urgensi: ${riskText}
                 </span>
             </div>
-
             <div class="p-4 space-y-3">
                 <div>
                     <p class="text-xs text-gray-400 mb-1">Indikasi Diagnosis:</p>
@@ -401,9 +479,7 @@ function analyzeSymptoms() {
                         "${desc}"
                     </p>
                 </div>
-
                 <div class="h-px bg-sage-100 w-full"></div>
-
                 <div class="flex justify-between items-end gap-2">
                     <div>
                         <p class="text-xs text-gray-400 mb-1">Saran Tindakan:</p>
@@ -418,20 +494,15 @@ function analyzeSymptoms() {
         </div>
     `;
 
-    // Kita bind event ke tombol baru yang baru saja di-render
     setTimeout(() => {
         const autoBtn = document.getElementById("autoQueueBtn");
         const queueBtn = document.getElementById("takeQueueBtn");
         
         if (autoBtn && queueBtn) {
             autoBtn.addEventListener("click", () => {
-                // 1. Scroll ke area antrean agar user lihat
                 queueBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                // 2. Tunggu scroll selesai dikit, baru klik tombol aslinya
                 setTimeout(() => {
                     queueBtn.click();
-                    // Opsional: Kasih highlight visual
                     queueBtn.classList.add('ring-2', 'ring-sage-500');
                     setTimeout(() => queueBtn.classList.remove('ring-2', 'ring-sage-500'), 1000);
                 }, 600);
@@ -449,7 +520,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setupTabSwitching();
     setupCostEstimator();
 
-    // Cek tombol antrean
     const queueBtn = document.getElementById("takeQueueBtn");
     
     if (queueBtn) {
@@ -459,45 +529,31 @@ document.addEventListener("DOMContentLoaded", () => {
             const status = document.getElementById("queueStatusCard");
             const headStatus = document.getElementById("queueStatusHeader");
             const terapiTitle = document.getElementById("terapiTitle");
-    
-            // --- LOGIKA BARU: AUTO INCREMENT (Nomor Nambah Terus) ---
             
-            // 1. Ambil nomor terakhir dari LocalStorage (memori browser)
-            // Jika belum ada, anggap saja mulai dari 0
+            // Logic Simpel (Increment) + Pindah Halaman
             let lastQueue = localStorage.getItem("novaQueueNumber");
             let currentQueue = lastQueue ? parseInt(lastQueue) : 0;
-    
-            // 2. Tambah 1
             currentQueue = currentQueue + 1;
-    
-            // 3. Simpan lagi ke memori biar browser ingat
             localStorage.setItem("novaQueueNumber", currentQueue);
-    
-            // 4. Format jadi A-00X (Contoh: 1 jadi A-001, 12 jadi A-012)
             const formattedQueue = "A-" + String(currentQueue).padStart(3, '0');
-    
-            // ---------------------------------------------------------
-    
-            // Tampilkan ke layar
+            
+            // Update UI
             num.textContent = formattedQueue;
             headNum.textContent = formattedQueue;
-            
             status.textContent = "Menunggu Dipanggil";
             headStatus.textContent = "Antrean Aktif";
-    
-            // Efek denyut
+            
             num.classList.add("queue-pulse");
             setTimeout(() => num.classList.remove("queue-pulse"), 600);
-    
-            // Pindah halaman dengan animasi transisi
+            
+            // Redirect ke Terapi
             if (window.showSection) {
                 window.showSection("terapi");
             }
             
-            // Mulai terapi napas
+            // Auto Start Breathing (Opsional)
             startBreathing();
-    
-            // Update judul terapi
+            
             if (terapiTitle) {
                 terapiTitle.textContent = `Menunggu Antrean ${formattedQueue}... Silakan Rileks.`;
             }
