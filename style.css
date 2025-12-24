@@ -50,7 +50,23 @@
 .animate-fade-in-up {
     animation: fade-in-up-short 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
-
+/* =========================================
+   6. CTA BUTTON
+   ========================================= */
+.cta-button {
+    background: linear-gradient(135deg, #52796F, #84A98C);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(82, 121, 111, 0.3);
+    transition: all 0.3s ease;
+    font-size: 0.875rem;
+}
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(82, 121, 111, 0.4);
+}
 @keyframes fade-out {
   from { opacity: 1; }
   to { opacity: 0; }
@@ -59,7 +75,7 @@
 /* Konfigurasi API View Transition Browser */
 ::view-transition-old(root) { animation: 90ms ease-out both fade-out; }
 ::view-transition-new(root) { animation: 300ms cubic-bezier(0.2, 0.8, 0.2, 1) both fade-in-up-short; }
-
+ 
 /* Aksesibilitas: Matikan animasi jika user tidak suka gerakan */
 @media (prefers-reduced-motion) {
     *, ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) {

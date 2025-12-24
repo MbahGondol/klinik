@@ -96,14 +96,9 @@
         </div>
 
         <div class="flex items-center gap-2 text-xs">
-          <div class="hidden md:flex flex-col items-end">
-            <span class="text-[10px] uppercase tracking-wide text-sage-500">Status Antrean</span>
-            <span id="queueStatusHeader" class="text-sage-800 font-bold">Silakan Check-in</span>
-          </div>
-          <div class="px-3 py-1.5 rounded-xl bg-sage-100 border border-sage-200 flex items-center gap-2">
-            <span class="text-[10px] text-sage-500 uppercase tracking-wide">Nomor</span>
-            <span id="queueNumberHeader" class="text-sm font-bold tracking-[0.18em] text-sage-800">--</span>
-          </div>
+          <button id="navbarQueueBtn" class="cta-button">
+            Ambil Antrean
+          </button>
         </div>
       </div>
     </nav>
@@ -251,7 +246,7 @@
 
         <div id="profil" class="spa-section hidden">
             <div class="grid md:grid-cols-2 gap-8 items-stretch">
-                <div class="space-y-6 flex flex-col justify-center">
+                <div class="space-y-6">
                     <div>
                         <h2 class="text-3xl font-bold text-sage-900 mb-3">Mengapa Nova Holistic?</h2>
                         <p class="text-gray-600 leading-relaxed text-sm md:text-base">
@@ -261,7 +256,7 @@
                         </p>
                     </div>
                     
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div class="p-4 bg-sage-50 rounded-2xl border border-sage-100 hover:shadow-md transition duration-300 group">
                             <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-sage-600 mb-3 shadow-sm group-hover:bg-sage-600 group-hover:text-white transition-colors">
                                 <i class="fa-solid fa-user-doctor text-lg"></i>
@@ -276,6 +271,38 @@
                             </div>
                             <h4 class="font-bold text-sage-800 text-sm">Mindfulness</h4>
                             <p class="text-[11px] text-gray-500 mt-1 leading-snug">Terapi ketenangan & meditasi untuk pemulihan mental.</p>
+                        </div>
+
+                        <div class="p-4 bg-sage-50 rounded-2xl border border-sage-100 hover:shadow-md transition duration-300 group">
+                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-sage-600 mb-3 shadow-sm group-hover:bg-sage-600 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-shield-alt text-lg"></i>
+                            </div>
+                            <h4 class="font-bold text-sage-800 text-sm">Privasi Terjaga</h4>
+                            <p class="text-[11px] text-gray-500 mt-1 leading-snug">Data kesehatan Anda aman dengan enkripsi tingkat tinggi.</p>
+                        </div>
+
+                        <div class="p-4 bg-sage-50 rounded-2xl border border-sage-100 hover:shadow-md transition duration-300 group">
+                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-sage-600 mb-3 shadow-sm group-hover:bg-sage-600 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-robot text-lg"></i>
+                            </div>
+                            <h4 class="font-bold text-sage-800 text-sm">Integrasi AI</h4>
+                            <p class="text-[11px] text-gray-500 mt-1 leading-snug">Prediksi kesehatan personal dengan kecerdasan buatan.</p>
+                        </div>
+
+                        <div class="p-4 bg-sage-50 rounded-2xl border border-sage-100 hover:shadow-md transition duration-300 group">
+                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-sage-600 mb-3 shadow-sm group-hover:bg-sage-600 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-money-bill-wave text-lg"></i>
+                            </div>
+                            <h4 class="font-bold text-sage-800 text-sm">Biaya Transparan</h4>
+                            <p class="text-[11px] text-gray-500 mt-1 leading-snug">Estimasi biaya jelas tanpa biaya tersembunyi.</p>
+                        </div>
+
+                        <div class="p-4 bg-sage-50 rounded-2xl border border-sage-100 hover:shadow-md transition duration-300 group">
+                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-sage-600 mb-3 shadow-sm group-hover:bg-sage-600 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-leaf text-lg"></i>
+                            </div>
+                            <h4 class="font-bold text-sage-800 text-sm">Apotek Herbal</h4>
+                            <p class="text-[11px] text-gray-500 mt-1 leading-snug">Obat herbal alami dari bahan organik pilihan.</p>
                         </div>
                     </div>
                 </div>
@@ -318,6 +345,14 @@
                         <span id="breathe-sub" class="text-[10px] text-sage-500 uppercase tracking-widest mt-1">Sentuh Lingkaran</span>
                     </div>
                 </div>
+            </div>
+            <div class="text-center mt-8">
+                <div id="timerDisplay" class="text-lg font-semibold text-sage-800 mb-4 hidden">
+                    Waktu Terapi: <span id="timerText">03:00</span>
+                </div>
+                <button id="finishSessionBtn" class="cta-button hidden">
+                    Selesai Sesi
+                </button>
             </div>
         </div>
 

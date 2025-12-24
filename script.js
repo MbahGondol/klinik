@@ -346,6 +346,197 @@ const setupCostEstimator = () => {
 };
 
 // =============================
+// SISTEM ANTREAN DENGAN LOCKING
+// =============================
+const SESSION_DURATION = 3 * 60 * 1000; // 3 menit dalam ms
+
+function generateQueueNumber() {
+    let lastQueue = localStorage.getItem("novaQueueNumber");
+    let currentQueue = lastQueue ? parseInt(lastQueue) : 0;
+    currentQueue = currentQueue + 1;
+    localStorage.setItem("novaQueueNumber", currentQueue);
+    return "A-" + String(currentQueue).padStart(3, '0');
+}
+
+function startSession(queueNumber) {
+    const now = Date.now();
+    localStorage.setItem("sessionStatus", "sedang_terapi");
+    localStorage.setItem("sessionStartTime", now);
+    localStorage.setItem("currentQueue", queueNumber);
+}
+
+function checkSessionStatus() {
+    const status = localStorage.getItem("sessionStatus");
+    const startTime = localStorage.getItem("sessionStartTime");
+    const queueNumber = localStorage.getItem("currentQueue");
+    
+    if (status === "sedang_terapi" && startTime) {
+        const elapsed = Date.now() - parseInt(startTime);
+        if (elapsed < SESSION_DURATION) {
+            // Masih dalam sesi, disable tombol
+            disableQueueButtons();
+            updateNavbarButton(queueNumber);
+        } else {
+            // Sesi habis, hapus status
+            finishSession();
+        }
+    }
+}
+
+function disableQueueButtons() {
+    const queueBtn = document.getElementById("takeQueueBtn");
+    const navbarQueueBtn = document.getElementById("navbarQueueBtn");
+    
+    if (queueBtn) {
+        queueBtn.disabled = true;
+        queueBtn.textContent = "Sesi Terapi Sedang Berlangsung";
+        queueBtn.classList.add("opacity-50", "cursor-not-allowed");
+    }
+    
+    if (navbarQueueBtn) {
+        navbarQueueBtn.disabled = true;
+        navbarQueueBtn.textContent = "Sesi Terapi Sedang Berlangsung";
+        navbarQueueBtn.classList.add("opacity-50", "cursor-not-allowed");
+    }
+}
+
+function enableQueueButtons() {
+    const queueBtn = document.getElementById("takeQueueBtn");
+    const navbarQueueBtn = document.getElementById("navbarQueueBtn");
+    
+    if (queueBtn) {
+        queueBtn.disabled = false;
+        queueBtn.textContent = "Ambil Antrean Sekarang";
+        queueBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    }
+    
+    if (navbarQueueBtn) {
+        navbarQueueBtn.disabled = false;
+        navbarQueueBtn.textContent = "Ambil Antrean";
+        navbarQueueBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    }
+}
+
+function updateNavbarButton(queueNumber) {
+    const navbarQueueBtn = document.getElementById("navbarQueueBtn");
+    if (navbarQueueBtn && queueNumber) {
+        navbarQueueBtn.textContent = `Antrean: ${queueNumber}`;
+        navbarQueueBtn.disabled = true;
+        navbarQueueBtn.classList.add("opacity-50", "cursor-not-allowed");
+    }
+}
+
+function handleTakeQueue() {
+    const status = localStorage.getItem("sessionStatus");
+    if (status === "sedang_terapi") {
+        alert("Selesaikan sesi terapi Anda terlebih dahulu");
+        return;
+    }
+    
+    const queueNumber = generateQueueNumber();
+    startSession(queueNumber);
+    
+    // Update UI
+    const num = document.getElementById("queueNumberCard");
+    const headNum = document.getElementById("queueNumberHeader");
+    const statusCard = document.getElementById("queueStatusCard");
+    const headStatus = document.getElementById("queueStatusHeader");
+    const terapiTitle = document.getElementById("terapiTitle");
+    
+    if (num) num.textContent = queueNumber;
+    if (headNum) headNum.textContent = queueNumber;
+    if (statusCard) statusCard.textContent = "Sedang Terapi";
+    if (headStatus) headStatus.textContent = "Terapi Aktif";
+    
+    if (num) {
+        num.classList.add("queue-pulse");
+        setTimeout(() => num.classList.remove("queue-pulse"), 600);
+    }
+    
+    // Redirect ke Terapi
+    if (window.showSection) {
+        window.showSection("terapi");
+    }
+    
+    // Update Navbar
+    updateNavbarButton(queueNumber);
+    
+    // Start Timer
+    startTherapyTimer();
+    
+    // Auto Start Breathing
+    startBreathing();
+    
+    if (terapiTitle) {
+        terapiTitle.textContent = `Sesi Terapi ${queueNumber} - Rileks dan Ikuti Instruksi.`;
+    }
+}
+
+function startTherapyTimer() {
+    const timerDisplay = document.getElementById("timerDisplay");
+    const timerText = document.getElementById("timerText");
+    const finishBtn = document.getElementById("finishSessionBtn");
+    
+    if (timerDisplay) timerDisplay.classList.remove("hidden");
+    if (finishBtn) finishBtn.classList.add("hidden");
+    
+    let remaining = SESSION_DURATION / 1000; // detik
+    
+    const interval = setInterval(() => {
+        remaining--;
+        const minutes = Math.floor(remaining / 60);
+        const seconds = remaining % 60;
+        if (timerText) {
+            timerText.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+        
+        if (remaining <= 0) {
+            clearInterval(interval);
+            if (timerDisplay) timerDisplay.classList.add("hidden");
+            if (finishBtn) {
+                finishBtn.classList.remove("hidden");
+                finishBtn.addEventListener("click", finishSession);
+            }
+        }
+    }, 1000);
+}
+
+function finishSession() {
+    localStorage.removeItem("sessionStatus");
+    localStorage.removeItem("sessionStartTime");
+    localStorage.removeItem("currentQueue");
+    
+    enableQueueButtons();
+    
+    const navbarQueueBtn = document.getElementById("navbarQueueBtn");
+    if (navbarQueueBtn) {
+        navbarQueueBtn.textContent = "Ambil Antrean";
+    }
+    
+    // Reset UI
+    const num = document.getElementById("queueNumberCard");
+    const headNum = document.getElementById("queueNumberHeader");
+    const statusCard = document.getElementById("queueStatusCard");
+    const headStatus = document.getElementById("queueStatusHeader");
+    const terapiTitle = document.getElementById("terapiTitle");
+    
+    if (num) num.textContent = "--";
+    if (headNum) headNum.textContent = "--";
+    if (statusCard) statusCard.textContent = "Menunggu Check-in";
+    if (headStatus) headStatus.textContent = "Silakan Check-in";
+    
+    if (terapiTitle) {
+        terapiTitle.textContent = "Ruang Tenang Digital";
+    }
+    
+    // Hide timer and finish button
+    const timerDisplay = document.getElementById("timerDisplay");
+    const finishBtn = document.getElementById("finishSessionBtn");
+    if (timerDisplay) timerDisplay.classList.add("hidden");
+    if (finishBtn) finishBtn.classList.add("hidden");
+}
+
+// =============================
 // 6. TERAPI NAPAS LOGIC
 // =============================
 let isBreathing = false;
@@ -519,45 +710,17 @@ document.addEventListener("DOMContentLoaded", () => {
     renderServices();
     setupTabSwitching();
     setupCostEstimator();
+    checkSessionStatus(); // Cek status antrean saat load
 
     const queueBtn = document.getElementById("takeQueueBtn");
+    const navbarQueueBtn = document.getElementById("navbarQueueBtn");
     
     if (queueBtn) {
-        queueBtn.addEventListener("click", () => {
-            const num = document.getElementById("queueNumberCard");
-            const headNum = document.getElementById("queueNumberHeader");
-            const status = document.getElementById("queueStatusCard");
-            const headStatus = document.getElementById("queueStatusHeader");
-            const terapiTitle = document.getElementById("terapiTitle");
-            
-            // Logic Simpel (Increment) + Pindah Halaman
-            let lastQueue = localStorage.getItem("novaQueueNumber");
-            let currentQueue = lastQueue ? parseInt(lastQueue) : 0;
-            currentQueue = currentQueue + 1;
-            localStorage.setItem("novaQueueNumber", currentQueue);
-            const formattedQueue = "A-" + String(currentQueue).padStart(3, '0');
-            
-            // Update UI
-            num.textContent = formattedQueue;
-            headNum.textContent = formattedQueue;
-            status.textContent = "Menunggu Dipanggil";
-            headStatus.textContent = "Antrean Aktif";
-            
-            num.classList.add("queue-pulse");
-            setTimeout(() => num.classList.remove("queue-pulse"), 600);
-            
-            // Redirect ke Terapi
-            if (window.showSection) {
-                window.showSection("terapi");
-            }
-            
-            // Auto Start Breathing (Opsional)
-            startBreathing();
-            
-            if (terapiTitle) {
-                terapiTitle.textContent = `Menunggu Antrean ${formattedQueue}... Silakan Rileks.`;
-            }
-        });
+        queueBtn.addEventListener("click", handleTakeQueue);
+    }
+    
+    if (navbarQueueBtn) {
+        navbarQueueBtn.addEventListener("click", handleTakeQueue);
     }
 
     const analyzeBtn = document.getElementById("analyzeBtn");
