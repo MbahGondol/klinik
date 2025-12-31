@@ -851,37 +851,37 @@ document.addEventListener("DOMContentLoaded", () => {
 // =============================
 const anatomyData = {
     kepala: {
-        title: "Tension Headache",
-        desc: "Sakit kepala tipe tegang. Sering dipicu stres kronis yang bikin otot leher kaku.",
-        tip: "Pijat area pelipis & kurangi screen-time.",
-        icon: '<i class="fa-solid fa-brain"></i>',
+        title: "Tension-Type Headache",
+        desc: "Sakit kepala yang terasa seperti 'diikat'. Secara psikosomatis, ini manifestasi dari overthinking dan emosi yang ditahan (suppressed anger) yang menegangkan otot leher.",
+        tip: "Lakukan teknik 'Progressive Muscle Relaxation' pada area wajah & leher.",
+        icon: '<i class="fa-solid fa-brain text-nexus-teal"></i>',
         color: "border-nexus-teal"
     },
     bahu: {
-        title: "Shoulder Burden",
-        desc: "Rasa berat di pundak sering dikaitkan dengan perasaan memikul tanggung jawab berlebih.",
-        tip: "Lakukan peregangan bahu tiap 2 jam kerja.",
-        icon: '<i class="fa-solid fa-dumbbell"></i>',
+        title: "Atlas Syndrome",
+        desc: "Sensasi beban berat di pundak. Sering dialami oleh 'tulang punggung keluarga' atau perfeksionis yang merasa bertanggung jawab atas segalanya sendirian.",
+        tip: "Delegasikan tugas & stretching trapezius tiap 2 jam.",
+        icon: '<i class="fa-solid fa-person-walking-luggage text-orange-500"></i>',
         color: "border-orange-400"
     },
     jantung: {
-        title: "Cardiac Anxiety",
-        desc: "Jantung berdebar bukan selalu sakit jantung, tapi respon 'fight or flight' tubuh.",
-        tip: "Teknik pernapasan 4-7-8 untuk menenangkan saraf.",
+        title: "Cardiac Neurosis",
+        desc: "Jantung berdebar (Palpitasi) tanpa kelainan organ. Ini adalah sinyal 'Fight or Flight' palsu akibat kecemasan bawah sadar yang kronis.",
+        tip: "Terapi 'Grounding 5-4-3-2-1' saat serangan panik muncul.",
         icon: '<i class="fa-solid fa-heart-pulse text-red-500"></i>',
         color: "border-red-500"
     },
     paru: {
-        title: "Shortness of Breath",
-        desc: "Sesak napas tanpa sebab fisik (Psikosomatis) sering muncul saat panik atau cemas.",
-        tip: "Fokus pada ekshalasi (buang napas) panjang.",
+        title: "Psychogenic Dyspnea",
+        desc: "Merasa sesak atau 'lapar udara' padahal saturasi oksigen normal. Tubuh sedang hiperventilasi karena otak mendeteksi ancaman emosional.",
+        tip: "Bernapas dalam kantong kertas atau teknik 'Box Breathing'.",
         icon: '<i class="fa-solid fa-lungs text-blue-400"></i>',
         color: "border-blue-400"
     },
     lambung: {
-        title: "GERD & Gastritis",
-        desc: "Stres meningkatkan asam lambung secara drastis. Ada koneksi kuat Gut-Brain Axis.",
-        tip: "Hindari kopi saat stres & makan porsi kecil.",
+        title: "Gut-Brain Axis Disorder",
+        desc: "Ingat, lambung adalah 'otak kedua'. Stres memicu saraf vagus memproduksi asam berlebih (GERD) dan melambatnya pencernaan.",
+        tip: "Hindari kafein saat stres & konsumsi probiotik.",
         icon: '<i class="fa-solid fa-fire-burner text-yellow-500"></i>',
         color: "border-yellow-500"
     }
