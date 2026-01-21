@@ -106,3 +106,134 @@
 .breathing-glow {
     box-shadow: 0 0 60px 20px rgba(132, 169, 140, 0.4);
 }
+
+
+
+/* Indikator Centang di Kartu Layanan */
+.service-card.selected-service .check-indicator {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* =========================================
+   7. ANATOMY CALLOUT STYLE (Gaya Penunjuk Garis)
+   ========================================= */
+
+/* Container Tombol Utama (Wrapper) */
+.anatomy-group {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    z-index: 20;
+    transition: all 0.3s ease;
+    /* Titik pusat transformasi di ujung titik */
+    transform-origin: center center; 
+}
+
+/* Titik Cincin (Target Ring) */
+.anatomy-ring {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(2px);
+    border: 2px solid currentColor; /* Warna ngikut text parent */
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
+    position: relative;
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+/* Titik Tengah Kecil */
+.anatomy-ring::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 4px; height: 4px;
+    background: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Garis Penghubung (Hanya Desktop) */
+.anatomy-line {
+    height: 1px;
+    width: 0px; /* Default 0, memanjang saat hover/desktop */
+    background-color: currentColor; /* Warna sama dengan ring */
+    transition: width 0.4s ease;
+    opacity: 0.7;
+    margin: 0 2px;
+}
+
+/* Teks Label (Hanya Desktop) */
+.anatomy-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    white-space: nowrap;
+    opacity: 0; /* Default sembunyi */
+    transform: translateX(-10px);
+    transition: all 0.4s ease;
+}
+
+/* --- STATE HOVER & DESKTOP --- */
+
+/* Di Desktop, Teks & Garis Selalu Muncul (Opsional: atau pas hover aja) */
+@media (min-width: 768px) {
+    .anatomy-line { width: 40px; } /* Panjang garis */
+    .anatomy-label { opacity: 1; transform: translateX(0); }
+    
+    /* Hover Effect: Scale up */
+    .anatomy-group:hover .anatomy-ring { transform: scale(1.2); }
+    .anatomy-group:hover .anatomy-label { background: #2F3E46; color: white !important; }
+}
+
+/* Ripple Animation tetap ada */
+.anatomy-ring::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    opacity: 0.3;
+    animation: ping 2s infinite;
+}
+
+/* =========================================
+   8. UTILITIES TAMBAHAN
+   ========================================= */
+/* Sembunyikan Scrollbar tapi tetap bisa discroll */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* =========================================
+   9. ANIMASI ANATOMI POP-OUT
+   ========================================= */
+@keyframes floatUpFade {
+    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+    20% { transform: translate(-50%, -80%) scale(1.2); opacity: 1; }
+    100% { transform: translate(-50%, -200%) scale(1); opacity: 0; }
+}
+
+.animate-float-up {
+    animation: floatUpFade 1s ease-out forwards;
+    position: absolute;
+    z-index: 50;
+    pointer-events: none; /* Agar tidak mengganggu klik */
+}
+
+/* Memastikan tinggi card konsisten */
+.anatomy-card-height {
+    height: 450px; /* Tinggi fix agar kanan & kiri sama persis */
+}
