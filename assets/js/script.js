@@ -412,18 +412,87 @@ const setupCostEstimator = () => {
   // Listen custom event dari renderServices (saat kartu diklik)
   els.container.addEventListener("serviceChanged", calculate);
 };
-
 // =============================
-// SISTEM ANTREAN DENGAN LOCKING
+// SISTEM ANTREAN DENGAN LOCKING & MODAL (REVISI)
 // =============================
 const SESSION_DURATION = 3 * 60 * 1000; // 3 menit dalam ms
 
-function generateQueueNumber() {
-  let lastQueue = localStorage.getItem("novaQueueNumber");
-  let currentQueue = lastQueue ? parseInt(lastQueue) : 0;
-  currentQueue = currentQueue + 1;
-  localStorage.setItem("novaQueueNumber", currentQueue);
-  return "A-" + String(currentQueue).padStart(3, "0");
+// --- 1. LOGIKA MODAL ---
+function openQueueModal() {
+    // Cek dulu apakah user sedang dalam sesi terapi aktif
+    const status = localStorage.getItem("sessionStatus");
+    if (status === "sedang_terapi") {
+        alert("Anda masih memiliki sesi antrean yang aktif! Selesaikan terapi dahulu.");
+        if (window.showSection) window.showSection("terapi");
+        return;
+    }
+
+    const modal = document.getElementById("queueModal");
+    if (modal) {
+        modal.classList.remove("hidden");
+        // Animasi fade in
+        setTimeout(() => {
+            modal.classList.remove("opacity-0");
+            modal.querySelector("div").classList.remove("scale-95");
+            modal.querySelector("div").classList.add("scale-100");
+        }, 10);
+    }
+}
+
+function closeQueueModal() {
+    const modal = document.getElementById("queueModal");
+    if (modal) {
+        modal.classList.add("opacity-0");
+        modal.querySelector("div").classList.remove("scale-100");
+        modal.querySelector("div").classList.add("scale-95");
+        setTimeout(() => {
+            modal.classList.add("hidden");
+        }, 300);
+    }
+}
+
+// --- 2. LOGIKA GENERATE NOMOR ---
+function generateQueueNumber(type) {
+    // Tentukan laci penyimpanan berdasarkan tipe
+    const storageKey = type === 'fisik' ? 'queueCounterF' : 'queueCounterM';
+    const prefix = type === 'fisik' ? 'F-' : 'M-';
+
+    let lastNumber = localStorage.getItem(storageKey);
+    let currentNumber = lastNumber ? parseInt(lastNumber) : 0;
+    
+    currentNumber += 1;
+    localStorage.setItem(storageKey, currentNumber);
+
+    return prefix + String(currentNumber).padStart(3, '0');
+}
+
+// --- 3. PROSES UTAMA SAAT PILIH TIPE ---
+function processQueue(type) {
+    // 1. Buat nomor baru
+    const queueNumber = generateQueueNumber(type);
+    
+    // 2. Simpan tipe antrean user saat ini
+    localStorage.setItem("myQueueType", type); 
+
+    // 3. Mulai Sesi (Timer, dll)
+    startSession(queueNumber);
+
+    // 4. Update UI
+    updateQueueUI(queueNumber, type);
+
+    // 5. Tutup Modal & Pindah ke Terapi
+    closeQueueModal();
+    if (window.showSection) window.showSection("terapi");
+
+    // 6. Jalankan Timer & Terapi Napas
+    startTherapyTimer();
+    startBreathing();
+    
+    // 7. Update judul di halaman terapi
+    const terapiTitle = document.getElementById("terapiTitle");
+    if (terapiTitle) {
+         terapiTitle.textContent = `Sesi Terapi ${queueNumber} - Rileks dan Ikuti Instruksi.`;
+    }
 }
 
 function startSession(queueNumber) {
@@ -433,11 +502,59 @@ function startSession(queueNumber) {
   localStorage.setItem("currentQueue", queueNumber);
 }
 
-// GANTI fungsi checkSessionStatus yang lama dengan ini:
+// --- 4. UPDATE TAMPILAN (WARNA & TEKS) ---
+function updateQueueUI(queueNumber, type) {
+    const num = document.getElementById("queueNumberCard");
+    const statusCard = document.getElementById("queueStatusCard");
+    const navbarBtn = document.getElementById("navbarQueueBtn");
+    const queueBtn = document.getElementById("takeQueueBtn"); // Tombol di Hero
+    
+    // Teks & Warna Label
+    let typeText = "Menunggu";
+    let statusClass = "text-xs font-medium bg-gray-100 text-gray-600 inline-block px-3 py-1 rounded-full";
+
+    if (type === 'fisik') {
+        typeText = "Poli Umum (Fisik)";
+        statusClass = "text-xs font-medium text-teal-700 bg-teal-100 inline-block px-3 py-1 rounded-full border border-teal-200";
+    } else if (type === 'mental') {
+        typeText = "Konseling (Mental)";
+        statusClass = "text-xs font-medium text-purple-700 bg-purple-100 inline-block px-3 py-1 rounded-full border border-purple-200";
+    }
+
+    // Update Elemen
+    if (num) {
+        num.textContent = queueNumber;
+        // Efek kedip saat update
+        num.classList.add("queue-pulse");
+        setTimeout(() => num.classList.remove("queue-pulse"), 600);
+    }
+    
+    if (statusCard) {
+        statusCard.textContent = typeText;
+        statusCard.className = statusClass;
+    }
+
+    // Disable Tombol Navbar
+    if (navbarBtn) {
+        navbarBtn.textContent = `Antrean: ${queueNumber}`;
+        navbarBtn.disabled = true;
+        navbarBtn.classList.add("opacity-50", "cursor-not-allowed");
+    }
+
+    // Disable Tombol Hero (Beranda)
+    if (queueBtn) {
+        queueBtn.textContent = "Sesi Terapi Sedang Berlangsung";
+        queueBtn.disabled = true;
+        queueBtn.classList.add("opacity-50", "cursor-not-allowed", "bg-gray-400");
+    }
+}
+
+// --- 5. CEK STATUS (SAAT REFRESH) ---
 function checkSessionStatus() {
   const status = localStorage.getItem("sessionStatus");
   const startTime = localStorage.getItem("sessionStartTime");
   const queueNumber = localStorage.getItem("currentQueue");
+  const queueType = localStorage.getItem("myQueueType"); // Ambil tipe yang tersimpan
 
   if (status === "sedang_terapi" && startTime) {
     const now = Date.now();
@@ -445,121 +562,73 @@ function checkSessionStatus() {
     const remainingMs = SESSION_DURATION - elapsed;
 
     if (remainingMs > 0) {
-      // Masih dalam sesi:
-      // 1. Matikan tombol antrean
-      disableQueueButtons();
-      updateNavbarButton(queueNumber);
+      // Restore UI
+      updateQueueUI(queueNumber, queueType);
 
-      // 2. LANJUTKAN TIMER (Konversi ms ke detik)
+      // Lanjutkan Timer
       const remainingSeconds = Math.ceil(remainingMs / 1000);
       startTherapyTimer(remainingSeconds);
 
-      // 3. Pindah ke halaman terapi otomatis biar user gak bingung
-      if (window.showSection) window.showSection("terapi");
-
-      // 4. Update teks judul
       const terapiTitle = document.getElementById("terapiTitle");
       if (terapiTitle) {
         terapiTitle.textContent = `Sesi Terapi ${queueNumber} - Lanjutkan Rileksasi Anda.`;
       }
     } else {
-      // Sesi sudah habis saat ditinggal refresh
       finishSession();
     }
   }
 }
 
-function disableQueueButtons() {
-  const queueBtn = document.getElementById("takeQueueBtn");
-  const navbarQueueBtn = document.getElementById("navbarQueueBtn");
+// --- 6. SELESAI SESI ---
+function finishSession() {
+  localStorage.removeItem("sessionStatus");
+  localStorage.removeItem("sessionStartTime");
+  localStorage.removeItem("currentQueue");
+  localStorage.removeItem("myQueueType");
 
-  if (queueBtn) {
-    queueBtn.disabled = true;
-    queueBtn.textContent = "Sesi Terapi Sedang Berlangsung";
-    queueBtn.classList.add("opacity-50", "cursor-not-allowed");
+  // Reset Tombol
+  enableQueueButtons();
+
+  // Reset UI Kartu
+  const num = document.getElementById("queueNumberCard");
+  const statusCard = document.getElementById("queueStatusCard");
+  const terapiTitle = document.getElementById("terapiTitle");
+
+  if (num) num.textContent = "--";
+  if (statusCard) {
+      statusCard.textContent = "Menunggu Check-in";
+      statusCard.className = "text-xs font-medium text-sage-600 bg-sage-100 inline-block px-3 py-1 rounded-full";
+  }
+  if (terapiTitle) {
+    terapiTitle.textContent = "Ruang Tenang Digital";
   }
 
-  if (navbarQueueBtn) {
-    navbarQueueBtn.disabled = true;
-    navbarQueueBtn.textContent = "Sesi Terapi Sedang Berlangsung";
-    navbarQueueBtn.classList.add("opacity-50", "cursor-not-allowed");
-  }
+  // Hide Timer
+  const timerDisplay = document.getElementById("timerDisplay");
+  const finishBtn = document.getElementById("finishSessionBtn");
+  if (timerDisplay) timerDisplay.classList.add("hidden");
+  if (finishBtn) finishBtn.classList.add("hidden");
 }
 
 function enableQueueButtons() {
-  const queueBtn = document.getElementById("takeQueueBtn");
-  const navbarQueueBtn = document.getElementById("navbarQueueBtn");
-
-  if (queueBtn) {
-    queueBtn.disabled = false;
-    queueBtn.textContent = "Ambil Antrean Sekarang";
-    queueBtn.classList.remove("opacity-50", "cursor-not-allowed");
-  }
-
-  if (navbarQueueBtn) {
-    navbarQueueBtn.disabled = false;
-    navbarQueueBtn.textContent = "Ambil Antrean";
-    navbarQueueBtn.classList.remove("opacity-50", "cursor-not-allowed");
-  }
+    const navbarBtn = document.getElementById("navbarQueueBtn");
+    const queueBtn = document.getElementById("takeQueueBtn");
+  
+    if (navbarBtn) {
+        navbarBtn.disabled = false;
+        navbarBtn.textContent = "Ambil Antrean";
+        navbarBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    }
+    
+    if (queueBtn) {
+        queueBtn.disabled = false;
+        queueBtn.textContent = "Ambil Antrean Sekarang";
+        queueBtn.classList.remove("opacity-50", "cursor-not-allowed", "bg-gray-400");
+    }
 }
 
-function updateNavbarButton(queueNumber) {
-  const navbarQueueBtn = document.getElementById("navbarQueueBtn");
-  if (navbarQueueBtn && queueNumber) {
-    navbarQueueBtn.textContent = `Antrean: ${queueNumber}`;
-    navbarQueueBtn.disabled = true;
-    navbarQueueBtn.classList.add("opacity-50", "cursor-not-allowed");
-  }
-}
-
-function handleTakeQueue() {
-  const status = localStorage.getItem("sessionStatus");
-  if (status === "sedang_terapi") {
-    alert("Selesaikan sesi terapi Anda terlebih dahulu");
-    return;
-  }
-
-  const queueNumber = generateQueueNumber();
-  startSession(queueNumber);
-
-  // Update UI
-  const num = document.getElementById("queueNumberCard");
-  const headNum = document.getElementById("queueNumberHeader");
-  const statusCard = document.getElementById("queueStatusCard");
-  const headStatus = document.getElementById("queueStatusHeader");
-  const terapiTitle = document.getElementById("terapiTitle");
-
-  if (num) num.textContent = queueNumber;
-  if (headNum) headNum.textContent = queueNumber;
-  if (statusCard) statusCard.textContent = "Sedang Terapi";
-  if (headStatus) headStatus.textContent = "Terapi Aktif";
-
-  if (num) {
-    num.classList.add("queue-pulse");
-    setTimeout(() => num.classList.remove("queue-pulse"), 600);
-  }
-
-  // Redirect ke Terapi
-  if (window.showSection) {
-    window.showSection("terapi");
-  }
-
-  // Update Navbar
-  updateNavbarButton(queueNumber);
-
-  // Start Timer
-  startTherapyTimer();
-
-  // Auto Start Breathing
-  startBreathing();
-
-  if (terapiTitle) {
-    terapiTitle.textContent = `Sesi Terapi ${queueNumber} - Rileks dan Ikuti Instruksi.`;
-  }
-}
-
-let therapyInterval; // Simpan interval di variabel global biar bisa di-clear kalau perlu
-
+// --- TIMER LOGIC (Tetap Sama) ---
+let therapyInterval;
 function startTherapyTimer(remainingSeconds) {
   const timerDisplay = document.getElementById("timerDisplay");
   const timerText = document.getElementById("timerText");
@@ -568,24 +637,19 @@ function startTherapyTimer(remainingSeconds) {
   if (timerDisplay) timerDisplay.classList.remove("hidden");
   if (finishBtn) finishBtn.classList.add("hidden");
 
-  // Kalau tidak ada parameter, pakai default durasi penuh
   let remaining = remainingSeconds || SESSION_DURATION / 1000;
 
-  // Clear interval sebelumnya (jika ada) biar gak tabrakan
   if (therapyInterval) clearInterval(therapyInterval);
 
-  // Fungsi update tampilan timer
   const updateDisplay = () => {
     const minutes = Math.floor(remaining / 60);
     const seconds = Math.floor(remaining % 60);
     if (timerText) {
-      timerText.textContent = `${String(minutes).padStart(2, "0")}:${String(
-        seconds
-      ).padStart(2, "0")}`;
+      timerText.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
     }
   };
 
-  updateDisplay(); // Jalankan sekali di awal biar gak nunggu 1 detik
+  updateDisplay();
 
   therapyInterval = setInterval(() => {
     remaining--;
@@ -597,47 +661,10 @@ function startTherapyTimer(remainingSeconds) {
       if (finishBtn) {
         finishBtn.classList.remove("hidden");
         finishBtn.replaceWith(finishBtn.cloneNode(true));
-        document
-          .getElementById("finishSessionBtn")
-          .addEventListener("click", finishSession);
+        document.getElementById("finishSessionBtn").addEventListener("click", finishSession);
       }
     }
   }, 1000);
-}
-
-function finishSession() {
-  localStorage.removeItem("sessionStatus");
-  localStorage.removeItem("sessionStartTime");
-  localStorage.removeItem("currentQueue");
-
-  enableQueueButtons();
-
-  const navbarQueueBtn = document.getElementById("navbarQueueBtn");
-  if (navbarQueueBtn) {
-    navbarQueueBtn.textContent = "Ambil Antrean";
-  }
-
-  // Reset UI
-  const num = document.getElementById("queueNumberCard");
-  const headNum = document.getElementById("queueNumberHeader");
-  const statusCard = document.getElementById("queueStatusCard");
-  const headStatus = document.getElementById("queueStatusHeader");
-  const terapiTitle = document.getElementById("terapiTitle");
-
-  if (num) num.textContent = "--";
-  if (headNum) headNum.textContent = "--";
-  if (statusCard) statusCard.textContent = "Menunggu Check-in";
-  if (headStatus) headStatus.textContent = "Silakan Check-in";
-
-  if (terapiTitle) {
-    terapiTitle.textContent = "Ruang Tenang Digital";
-  }
-
-  // Hide timer and finish button
-  const timerDisplay = document.getElementById("timerDisplay");
-  const finishBtn = document.getElementById("finishSessionBtn");
-  if (timerDisplay) timerDisplay.classList.add("hidden");
-  if (finishBtn) finishBtn.classList.add("hidden");
 }
 
 // =============================
@@ -646,7 +673,7 @@ function finishSession() {
 let isBreathing = false;
 let breatheInterval;
 
-const breatheAudio = new Audio("nafas-manual.mp3");
+const breatheAudio = new Audio("assets/audio/nafas-manual.mp3");
 breatheAudio.volume = 0.3;
 
 function startBreathing() {
@@ -832,13 +859,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const queueBtn = document.getElementById("takeQueueBtn");
   const navbarQueueBtn = document.getElementById("navbarQueueBtn");
 
+  // === BAGIAN YANG DIPERBAIKI ===
+  // Mengganti 'handleTakeQueue' menjadi 'openQueueModal'
+  
   if (queueBtn) {
-    queueBtn.addEventListener("click", handleTakeQueue);
+    queueBtn.addEventListener("click", openQueueModal);
   }
 
   if (navbarQueueBtn) {
-    navbarQueueBtn.addEventListener("click", handleTakeQueue);
+    navbarQueueBtn.addEventListener("click", openQueueModal);
   }
+  // ==============================
 
   const analyzeBtn = document.getElementById("analyzeBtn");
   if (analyzeBtn) {
@@ -941,35 +972,35 @@ function showAnatomyInfo(part) {
 
 const eduSlides = [
     {
-        img: "assets/slide-1.jpg",
+        img: "assets/img/slide-1.jpg",
         title: "Teknik Grounding 5-4-3-2-1",
         category: "Mental Health",
         desc: "Saat cemas menyerang, gunakan panca indera untuk kembali ke saat ini. Cari 5 benda yang bisa dilihat, 4 diraba, 3 didengar, 2 dicium, dan 1 dirasakan. Teknik ini memutus siklus panik di otak secara instan.",
         tips: "Lakukan latihan ini kapan saja kamu merasa jantung berdebar tanpa sebab yang jelas."
     },
     {
-        img: "assets/slide-2.jpg",
+        img: "assets/img/slide-2.jpg",
         title: "Sakit Kepala? Cek Minummu!",
         category: "Fisik",
         desc: "Kurang minum bukan hanya membuat haus, tapi menurunkan konsentrasi dan memicu sakit kepala tegang (Tension Headache). Otak kita terdiri dari 75% air, kehilangan sedikit saja cairan akan membuat emosi tidak stabil.",
         tips: "Minum segelas air putih hangat setiap bangun tidur untuk rehidrasi otak."
     },
     {
-        img: "assets/slide-3.jpg",
+        img: "assets/img/slide-3.jpg",
         title: "Makanan Penjaga Mood",
         category: "Nutrisi",
         desc: "Apa yang kamu makan mempengaruhi perasaanmu (Gut-Brain Axis). Makanan tinggi gula bisa memberikan energi instan tapi menyebabkan 'sugar crash' yang bikin lemas. Sayuran hijau kaya magnesium yang menenangkan saraf.",
         tips: "Ganti camilan manis dengan buah potong, kacang almond, atau dark chocolate."
     },
     {
-        img: "assets/slide-4.jpg",
+        img: "assets/img/slide-4.jpg",
         title: "Susah Tidur? Matikan Layar",
         category: "Lifestyle",
         desc: "Paparan cahaya biru (blue light) dari HP menekan hormon melatonin, membuatmu susah tidur nyenyak. Kualitas tidur yang buruk adalah pemicu utama stres kronis, burnout, dan kecemasan berlebih.",
         tips: "Terapkan 'No Screen Rule' 1 jam sebelum tidur. Ganti dengan membaca buku."
     },
     {
-        img: "assets/slide-5.jpg",
+        img: "assets/img/slide-5.jpg",
         title: "Jurnal untuk Kesehatan Mental",
         category: "Emosi",
         desc: "Menuangkan isi kepala ke atas kertas (Journaling) terbukti ampuh mengurai benang kusut di pikiran. Menulis tentang perasaan dan pengalaman membantu memproses emosi serta mengurangi stres.",

@@ -72,7 +72,7 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
   </head>
 
   <body
@@ -413,7 +413,7 @@
             <div class="h-1 bg-nexus-teal/30 shadow-[0_0_20px_rgba(20,184,166,0.4)] animate-scan z-0 absolute w-full top-0"></div>
 
             <div class="relative h-[90%] w-full flex justify-center items-center">
-                <img src="assets/body.png" 
+                <img src="assets/img/body.png" 
                      alt="Anatomi Tubuh" 
                      class="h-full w-auto object-contain opacity-80 mix-blend-multiply drop-shadow-xl"
                 >
@@ -1006,6 +1006,40 @@
 </div>
 </div>
 
-    <script src="script.js"></script>
+<div id="queueModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-nexus-dark/50 backdrop-blur-sm transition-opacity opacity-0">
+    
+    <div class="bg-white rounded-3xl p-6 md:p-8 w-full max-w-md shadow-2xl transform scale-95 transition-transform duration-300 relative mx-4">
+        
+        <button onclick="closeQueueModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+
+        <div class="text-center mb-6">
+            <h3 class="text-2xl font-bold text-sage-900">Ambil Nomor Antrean</h3>
+            <p class="text-sm text-gray-500 mt-2">Agar penanganan lebih tepat, pilih jenis keluhan utama Anda:</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            
+            <button onclick="processQueue('fisik')" class="group p-4 rounded-2xl border-2 border-sage-100 hover:border-nexus-teal hover:bg-teal-50 transition-all duration-300 text-left">
+                <div class="w-10 h-10 rounded-full bg-teal-100 text-nexus-teal flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-stethoscope"></i>
+                </div>
+                <h4 class="font-bold text-sage-800 text-sm">Poli Fisik</h4>
+                <p class="text-[10px] text-gray-500 mt-1 leading-snug">Sakit badan, gigi, maag, atau luka.</p>
+            </button>
+
+            <button onclick="processQueue('mental')" class="group p-4 rounded-2xl border-2 border-sage-100 hover:border-purple-400 hover:bg-purple-50 transition-all duration-300 text-left">
+                <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-500 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <h4 class="font-bold text-sage-800 text-sm">Konseling</h4>
+                <p class="text-[10px] text-gray-500 mt-1 leading-snug">Stres, cemas, sulit tidur, burnout.</p>
+            </button>
+        </div>
+    </div>
+</div>
+
+    <script src="assets/js/script.js"></script>
   </body>
 </html>
