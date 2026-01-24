@@ -1,41 +1,57 @@
 // =============================
-// 1. DATA DOKTER
+// 1. DATA TIM AHLI (UPDATED & LOKAL)
 // =============================
 const doctors = [
   {
-    name: "dr. Aisyah Putri, Sp.PD-KPsi",
-    specialist: "Spesialis Psikosomatis",
-    schedule: "Senin, Rabu, Jumat • 09.00–13.00",
-    room: "Ruang Konsultasi 1",
-    photo:
-      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=200&auto=format&fit=crop",
+    id: 1,
+    name: "Karina Anindya, M.Psi, Psikolog",
+    role: "Spesialis Trauma & Trust Issue",
+    description: "Berpengalaman menangani trauma mendalam dan membangun kembali kepercayaan diri pasca-konflik.",
+    contact: {
+      email: "karina@soulvaja.id", 
+      phone: "0812-0000-0001",    
+      location: "Jakarta"
+    },
+    // FOTO LOKAL (Pastikan file ada di folder assets/img/)
+    photo: "assets/img/dokter_1.avif",
   },
   {
-    name: "drg. Livia Wulandari",
-    specialist: "Dokter Gigi (Spesialis TMJ)",
-    schedule: "Senin–Sabtu • 10.00–18.00",
-    room: "Dental Relax Room",
-    photo:
-      "https://images.unsplash.com/photo-1594824476967-48c8b964273f?q=80&w=200&auto=format&fit=crop",
+    id: 2,
+    name: "Budi Santoso, S.Psi, C.Ht",
+    role: "Hipnoterapi & Relaksasi",
+    description: "Praktisi hipnoterapi klinis untuk manajemen stres, fobia, dan relaksasi pikiran bawah sadar.",
+    contact: {
+      email: "budi@soulvaja.id",   
+      phone: "0812-0000-0002",    
+      location: "Jakarta"
+    },
+    photo: "assets/img/dokter_2.avif",
   },
   {
-    name: "dr. Clara Widya, Sp.KJ",
-    specialist: "Psikiater & Mindfulness",
-    schedule: "Rabu & Jumat • 17.00–20.00",
-    room: "Serenity Lounge",
-    photo:
-      "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=200&auto=format&fit=crop",
+    id: 3,
+    name: "Sarah Wijaya, M.Psi",
+    role: "Konselor Pernikahan & Keluarga",
+    description: "Membantu pasangan dan keluarga menemukan solusi komunikasi dan keharmonisan rumah tangga.",
+    contact: {
+      email: "sarah@soulvaja.id",  
+      phone: "0812-0000-0003",    
+      location: "Jakarta"
+    },
+    photo: "assets/img/dokter_3.avif",
   },
   {
-    name: "Budi Santoso, S.Psi",
-    specialist: "Psikolog Klinis",
-    schedule: "Selasa & Kamis • 13.00–17.00",
-    room: "Ruang Terapi",
-    photo:
-      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=200&auto=format&fit=crop",
+    id: 4,
+    name: "Dr. Rian Pratama, Sp.KJ",
+    role: "Psikiater (Manajemen Kecemasan)",
+    description: "Pendekatan medis dan terapi untuk menangani gangguan kecemasan klinis dan kesehatan mental.",
+    contact: {
+      email: "rian@soulvaja.id",   
+      phone: "0812-0000-0004",    
+      location: "Jakarta"
+    },
+    photo: "assets/img/dokter_4.avif",
   },
 ];
-
 // =============================
 // 2. DATA LAYANAN
 // =============================
@@ -161,40 +177,49 @@ const renderDoctors = () => {
   const list = document.getElementById("doctorList");
   if (!list) return;
   list.innerHTML = "";
+  
   doctors.forEach((doc) => {
     const card = document.createElement("article");
 
+    // Layout kartu kita perbarui agar muat deskripsi
     card.className =
-      "flex items-start gap-4 p-5 rounded-2xl bg-white/80 border border-white shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group";
+      "flex flex-col sm:flex-row items-start gap-4 p-5 rounded-2xl bg-white/80 border border-white shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group";
 
     card.innerHTML = `
-            <div class="relative">
-                <div class="h-16 w-16 rounded-2xl overflow-hidden bg-sage-100 ring-2 ring-white shadow-md">
-                    <img src="${doc.photo}" class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500" />
+            <div class="relative shrink-0">
+                <div class="h-20 w-20 rounded-2xl overflow-hidden bg-sage-100 ring-2 ring-white shadow-md">
+                    <img src="${doc.photo}" class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${doc.name}" />
                 </div>
-                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 border-2 border-white rounded-full"></div>
+                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 border-2 border-white rounded-full" title="Available"></div>
             </div>
+            
             <div class="flex-1 min-w-0">
-                <h4 class="font-bold text-sage-900 group-hover:text-sage-700 transition-colors">${doc.name}</h4>
-                <p class="text-xs font-medium text-sage-600 mb-2">${doc.specialist}</p>
-                <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sage-50 border border-sage-100 text-[10px] text-sage-500">
-                    <i class="fa-regular fa-clock"></i> ${doc.schedule}
+                <h4 class="font-bold text-sage-900 text-lg leading-tight group-hover:text-sage-700 transition-colors">
+                    ${doc.name}
+                </h4>
+                
+                <p class="text-[10px] font-bold text-nexus-teal uppercase tracking-wider mb-2 mt-1">
+                    ${doc.role}
+                </p>
+                
+                <p class="text-xs text-gray-500 leading-relaxed mb-3 line-clamp-2">
+                    ${doc.description}
+                </p>
+                
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sage-50 border border-sage-100 text-[10px] text-sage-500 font-medium">
+                    <i class="fa-solid fa-location-dot text-sage-400"></i> ${doc.contact.location}
                 </div>
             </div>`;
+            
     list.appendChild(card);
   });
 };
 
 const renderServices = () => {
   const container = document.getElementById("servicesContainer");
-  // Hapus referensi ke select karena elemennya sudah kita buang di HTML
-
   if (!container) return;
-
   container.innerHTML = "";
-
   services.forEach((s) => {
-    // Render List Benefits
     const benefitsHTML = s.benefits
       .map(
         (item) => `
@@ -205,33 +230,22 @@ const renderServices = () => {
         `
       )
       .join("");
-
     const card = document.createElement("div");
-    // Tambahkan data-attributes untuk memudahkan pengambilan data saat kalkulasi
     card.dataset.id = s.id;
     card.dataset.price = s.price;
     card.dataset.name = s.name;
-
-    // Tambahkan class indentifier 'service-card'
     card.className =
       "service-card flex flex-col p-5 rounded-2xl border border-sage-100 bg-white hover:border-sage-300 hover:shadow-lg transition-all duration-200 cursor-pointer group h-full relative overflow-hidden select-none";
-
-    // Logika Klik Multi-Select
     card.onclick = () => {
-      // Toggle Class Active
       card.classList.toggle("selected-service");
-      card.classList.toggle("ring-4"); // Border Tebal
-      card.classList.toggle("ring-sage-500"); // Warna Sage
-      card.classList.toggle("bg-sage-50"); // Background agak gelap dikit
-
-      // Trigger Event agar Kalkulator menghitung ulang otomatis
+      card.classList.toggle("ring-4");
+      card.classList.toggle("ring-sage-500");
+      card.classList.toggle("bg-sage-50");
       const event = new Event("serviceChanged");
       document.getElementById("servicesContainer").dispatchEvent(event);
     };
-
     card.innerHTML = `
             <div class="absolute top-0 right-0 w-24 h-24 bg-sage-50 rounded-bl-full -mr-4 -mt-4 opacity-50 group-hover:bg-sage-100 transition-colors"></div>
-
             <div class="flex justify-between items-start mb-3 relative z-10">
                 <div class="h-10 w-10 rounded-xl bg-sage-50 flex items-center justify-center text-sage-600 group-hover:bg-sage-600 group-hover:text-white transition-colors shadow-sm">
                     <i class="${s.icon} text-lg"></i>
@@ -240,23 +254,17 @@ const renderServices = () => {
                     ${s.category}
                 </span>
             </div>
-
             <div class="mb-4 relative z-10">
                 <h4 class="font-bold text-sage-900 text-sm mb-1">${s.name}</h4>
-                <p class="text-lg font-bold text-sage-700">${formatRupiah(
-                  s.price
-                )}</p>
+                <p class="text-lg font-bold text-sage-700">${formatRupiah(s.price)}</p>
             </div>
-
             <div class="h-px w-full bg-sage-100 mb-4"></div>
-
             <div class="flex-1 relative z-10">
                 <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Paket Termasuk:</p>
                 <ul class="space-y-2">
                     ${benefitsHTML}
                 </ul>
             </div>
-            
             <div class="absolute top-3 right-3 z-20 opacity-0 transform scale-50 transition-all duration-200 check-indicator">
                 <div class="bg-sage-600 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-md">
                     <i class="fa-solid fa-check text-xs"></i>
@@ -267,13 +275,12 @@ const renderServices = () => {
   });
 };
 
-// =============================================
+// =============================
 // 4. SPA SYSTEM
-// =============================================
+// =============================
 const setupTabSwitching = () => {
   const navLinks = document.querySelectorAll(".nav-link");
   const sections = document.querySelectorAll(".spa-section");
-
   const updateDOM = (targetId) => {
     sections.forEach((sec) => {
       if (sec.id === targetId) {
@@ -282,11 +289,9 @@ const setupTabSwitching = () => {
         sec.classList.add("hidden");
       }
     });
-
     navLinks.forEach((link) => {
       const isActive = link.dataset.target === targetId;
       link.classList.toggle("tab-active", isActive);
-
       if (isActive) {
         link.classList.remove("text-sage-600");
         const icon = link.querySelector("i");
@@ -295,10 +300,8 @@ const setupTabSwitching = () => {
         link.classList.add("text-sage-600");
       }
     });
-
     window.scrollTo(0, 0);
   };
-
   const showSection = (targetId) => {
     if (!document.startViewTransition) {
       updateDOM(targetId);
@@ -308,9 +311,7 @@ const setupTabSwitching = () => {
       updateDOM(targetId);
     });
   };
-
   window.showSection = showSection;
-
   navLinks.forEach((link) => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
@@ -318,7 +319,6 @@ const setupTabSwitching = () => {
       if (btn) showSection(btn.dataset.target);
     });
   });
-
   updateDOM("beranda");
 };
 
@@ -327,7 +327,6 @@ const setupTabSwitching = () => {
 // =============================
 const setupCostEstimator = () => {
   const els = {
-    // select: document.getElementById("serviceSelect"), // SUDAH DIHAPUS
     container: document.getElementById("servicesContainer"),
     qty: document.getElementById("quantityInput"),
     payment: document.getElementById("paymentType"),
@@ -336,101 +335,60 @@ const setupCostEstimator = () => {
     total: document.getElementById("estimateTotal"),
     detail: document.getElementById("estimateDetail"),
   };
-
-  // Gak perlu cek els.select lagi
   if (!els.btn || !els.container) return;
-
   const calculate = () => {
-    // 1. Cari semua kartu yang dipilih (ada class 'selected-service')
-    const selectedCards = document.querySelectorAll(
-      ".service-card.selected-service"
-    );
-
-    // 2. Jika tidak ada yang dipilih
+    const selectedCards = document.querySelectorAll(".service-card.selected-service");
     if (selectedCards.length === 0) {
       els.total.textContent = "Rp0";
       els.detail.textContent = "Silakan pilih minimal satu layanan.";
       return;
     }
-
-    // 3. Hitung Total Dasar (Sum Price)
     let totalBasePrice = 0;
     let selectedNames = [];
-
     selectedCards.forEach((card) => {
       totalBasePrice += parseInt(card.dataset.price);
       selectedNames.push(card.dataset.name);
     });
-
-    // 4. Kalikan dengan Jumlah (Pax)
-    // Asumsi: Quantity berlaku untuk paket yang dipilih (misal: 2 orang ambil paket A+B)
     const qty = parseInt(els.qty.value) || 1;
     let subtotal = totalBasePrice * qty;
-
-    // 5. Logika Diskon / Asuransi
     let note = "";
     if (els.payment.value === "bpjs") {
-      subtotal *= 0.15; // Bayar 15% aja
+      subtotal *= 0.15;
       note = "Cover BPJS (Bayar Admin 15%)";
     } else if (els.payment.value === "asuransi") {
-      subtotal *= 0.5; // Bayar 50%
+      subtotal *= 0.5;
       note = "Cover Asuransi 50%";
     } else {
       note = "Pembayaran Tunai/QRIS";
     }
-
-    // 6. Tambahan Kontrol Lanjutan (Opsional)
-    // Logika: Biaya kontrol (misal 100rb fix) atau persentase?
-    // Kita pakai logika lama: nambah biaya dari total
     if (els.check.checked) {
-      // Misal biaya kontrol flat 50rb per layanan yg dipilih
       const controlCost = 50000 * selectedCards.length * qty;
       subtotal += controlCost;
       note += " + Kontrol Lanjutan";
     }
-
-    // Update UI
     els.total.textContent = formatRupiah(subtotal);
-
-    // Tampilkan detail ringkas
-    const namesStr =
-      selectedNames.length > 2
-        ? `${selectedNames.length} Layanan Terpilih`
-        : selectedNames.join(" + ");
-
+    const namesStr = selectedNames.length > 2 ? `${selectedNames.length} Layanan Terpilih` : selectedNames.join(" + ");
     els.detail.textContent = `${namesStr} (${qty} Pax). ${note}`;
   };
-
-  // Event Listeners
   els.btn.addEventListener("click", calculate);
-
-  // Listen perubahan pada input form
-  [els.qty, els.payment, els.check].forEach((e) =>
-    e.addEventListener("change", calculate)
-  );
-
-  // Listen custom event dari renderServices (saat kartu diklik)
+  [els.qty, els.payment, els.check].forEach((e) => e.addEventListener("change", calculate));
   els.container.addEventListener("serviceChanged", calculate);
 };
-// =============================
-// SISTEM ANTREAN DENGAN LOCKING & MODAL (REVISI)
-// =============================
-const SESSION_DURATION = 3 * 60 * 1000; // 3 menit dalam ms
 
-// --- 1. LOGIKA MODAL ---
+// =============================
+// SISTEM ANTREAN DENGAN LOCKING & MODAL
+// =============================
+const SESSION_DURATION = 3 * 60 * 1000;
 function openQueueModal() {
-    // Cek dulu apakah user sedang dalam sesi terapi aktif
     const status = localStorage.getItem("sessionStatus");
     if (status === "sedang_terapi") {
         alert("Anda masih memiliki sesi antrean yang aktif! Selesaikan terapi dahulu.");
         if (window.showSection) window.showSection("terapi");
         return;
     }
-
     const modal = document.getElementById("queueModal");
     if (modal) {
         modal.classList.remove("hidden");
-        // Animasi fade in
         setTimeout(() => {
             modal.classList.remove("opacity-0");
             modal.querySelector("div").classList.remove("scale-95");
@@ -438,7 +396,6 @@ function openQueueModal() {
         }, 10);
     }
 }
-
 function closeQueueModal() {
     const modal = document.getElementById("queueModal");
     if (modal) {
@@ -450,69 +407,42 @@ function closeQueueModal() {
         }, 300);
     }
 }
-
-// --- 2. LOGIKA GENERATE NOMOR ---
 function generateQueueNumber(type) {
-    // Tentukan laci penyimpanan berdasarkan tipe
     const storageKey = type === 'fisik' ? 'queueCounterF' : 'queueCounterM';
     const prefix = type === 'fisik' ? 'F-' : 'M-';
-
     let lastNumber = localStorage.getItem(storageKey);
     let currentNumber = lastNumber ? parseInt(lastNumber) : 0;
-    
     currentNumber += 1;
     localStorage.setItem(storageKey, currentNumber);
-
     return prefix + String(currentNumber).padStart(3, '0');
 }
-
-// --- 3. PROSES UTAMA SAAT PILIH TIPE ---
 function processQueue(type) {
-    // 1. Buat nomor baru
     const queueNumber = generateQueueNumber(type);
-    
-    // 2. Simpan tipe antrean user saat ini
-    localStorage.setItem("myQueueType", type); 
-
-    // 3. Mulai Sesi (Timer, dll)
+    localStorage.setItem("myQueueType", type);
     startSession(queueNumber);
-
-    // 4. Update UI
     updateQueueUI(queueNumber, type);
-
-    // 5. Tutup Modal & Pindah ke Terapi
     closeQueueModal();
     if (window.showSection) window.showSection("terapi");
-
-    // 6. Jalankan Timer & Terapi Napas
     startTherapyTimer();
     startBreathing();
-    
-    // 7. Update judul di halaman terapi
     const terapiTitle = document.getElementById("terapiTitle");
     if (terapiTitle) {
          terapiTitle.textContent = `Sesi Terapi ${queueNumber} - Rileks dan Ikuti Instruksi.`;
     }
 }
-
 function startSession(queueNumber) {
   const now = Date.now();
   localStorage.setItem("sessionStatus", "sedang_terapi");
   localStorage.setItem("sessionStartTime", now);
   localStorage.setItem("currentQueue", queueNumber);
 }
-
-// --- 4. UPDATE TAMPILAN (WARNA & TEKS) ---
 function updateQueueUI(queueNumber, type) {
     const num = document.getElementById("queueNumberCard");
     const statusCard = document.getElementById("queueStatusCard");
     const navbarBtn = document.getElementById("navbarQueueBtn");
-    const queueBtn = document.getElementById("takeQueueBtn"); // Tombol di Hero
-    
-    // Teks & Warna Label
+    const queueBtn = document.getElementById("takeQueueBtn");
     let typeText = "Menunggu";
     let statusClass = "text-xs font-medium bg-gray-100 text-gray-600 inline-block px-3 py-1 rounded-full";
-
     if (type === 'fisik') {
         typeText = "Poli Umum (Fisik)";
         statusClass = "text-xs font-medium text-teal-700 bg-teal-100 inline-block px-3 py-1 rounded-full border border-teal-200";
@@ -520,55 +450,39 @@ function updateQueueUI(queueNumber, type) {
         typeText = "Konseling (Mental)";
         statusClass = "text-xs font-medium text-purple-700 bg-purple-100 inline-block px-3 py-1 rounded-full border border-purple-200";
     }
-
-    // Update Elemen
     if (num) {
         num.textContent = queueNumber;
-        // Efek kedip saat update
         num.classList.add("queue-pulse");
         setTimeout(() => num.classList.remove("queue-pulse"), 600);
     }
-    
     if (statusCard) {
         statusCard.textContent = typeText;
         statusCard.className = statusClass;
     }
-
-    // Disable Tombol Navbar
     if (navbarBtn) {
         navbarBtn.textContent = `Antrean: ${queueNumber}`;
         navbarBtn.disabled = true;
         navbarBtn.classList.add("opacity-50", "cursor-not-allowed");
     }
-
-    // Disable Tombol Hero (Beranda)
     if (queueBtn) {
         queueBtn.textContent = "Sesi Terapi Sedang Berlangsung";
         queueBtn.disabled = true;
         queueBtn.classList.add("opacity-50", "cursor-not-allowed", "bg-gray-400");
     }
 }
-
-// --- 5. CEK STATUS (SAAT REFRESH) ---
 function checkSessionStatus() {
   const status = localStorage.getItem("sessionStatus");
   const startTime = localStorage.getItem("sessionStartTime");
   const queueNumber = localStorage.getItem("currentQueue");
-  const queueType = localStorage.getItem("myQueueType"); // Ambil tipe yang tersimpan
-
+  const queueType = localStorage.getItem("myQueueType");
   if (status === "sedang_terapi" && startTime) {
     const now = Date.now();
     const elapsed = now - parseInt(startTime);
     const remainingMs = SESSION_DURATION - elapsed;
-
     if (remainingMs > 0) {
-      // Restore UI
       updateQueueUI(queueNumber, queueType);
-
-      // Lanjutkan Timer
       const remainingSeconds = Math.ceil(remainingMs / 1000);
       startTherapyTimer(remainingSeconds);
-
       const terapiTitle = document.getElementById("terapiTitle");
       if (terapiTitle) {
         terapiTitle.textContent = `Sesi Terapi ${queueNumber} - Lanjutkan Rileksasi Anda.`;
@@ -578,22 +492,15 @@ function checkSessionStatus() {
     }
   }
 }
-
-// --- 6. SELESAI SESI ---
 function finishSession() {
   localStorage.removeItem("sessionStatus");
   localStorage.removeItem("sessionStartTime");
   localStorage.removeItem("currentQueue");
   localStorage.removeItem("myQueueType");
-
-  // Reset Tombol
   enableQueueButtons();
-
-  // Reset UI Kartu
   const num = document.getElementById("queueNumberCard");
   const statusCard = document.getElementById("queueStatusCard");
   const terapiTitle = document.getElementById("terapiTitle");
-
   if (num) num.textContent = "--";
   if (statusCard) {
       statusCard.textContent = "Menunggu Check-in";
@@ -602,45 +509,34 @@ function finishSession() {
   if (terapiTitle) {
     terapiTitle.textContent = "Ruang Tenang Digital";
   }
-
-  // Hide Timer
   const timerDisplay = document.getElementById("timerDisplay");
   const finishBtn = document.getElementById("finishSessionBtn");
   if (timerDisplay) timerDisplay.classList.add("hidden");
   if (finishBtn) finishBtn.classList.add("hidden");
 }
-
 function enableQueueButtons() {
     const navbarBtn = document.getElementById("navbarQueueBtn");
     const queueBtn = document.getElementById("takeQueueBtn");
-  
     if (navbarBtn) {
         navbarBtn.disabled = false;
         navbarBtn.textContent = "Ambil Antrean";
         navbarBtn.classList.remove("opacity-50", "cursor-not-allowed");
     }
-    
     if (queueBtn) {
         queueBtn.disabled = false;
         queueBtn.textContent = "Ambil Antrean Sekarang";
         queueBtn.classList.remove("opacity-50", "cursor-not-allowed", "bg-gray-400");
     }
 }
-
-// --- TIMER LOGIC (Tetap Sama) ---
 let therapyInterval;
 function startTherapyTimer(remainingSeconds) {
   const timerDisplay = document.getElementById("timerDisplay");
   const timerText = document.getElementById("timerText");
   const finishBtn = document.getElementById("finishSessionBtn");
-
   if (timerDisplay) timerDisplay.classList.remove("hidden");
   if (finishBtn) finishBtn.classList.add("hidden");
-
   let remaining = remainingSeconds || SESSION_DURATION / 1000;
-
   if (therapyInterval) clearInterval(therapyInterval);
-
   const updateDisplay = () => {
     const minutes = Math.floor(remaining / 60);
     const seconds = Math.floor(remaining % 60);
@@ -648,13 +544,10 @@ function startTherapyTimer(remainingSeconds) {
       timerText.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
     }
   };
-
   updateDisplay();
-
   therapyInterval = setInterval(() => {
     remaining--;
     updateDisplay();
-
     if (remaining <= 0) {
       clearInterval(therapyInterval);
       if (timerDisplay) timerDisplay.classList.add("hidden");
@@ -672,15 +565,12 @@ function startTherapyTimer(remainingSeconds) {
 // =============================
 let isBreathing = false;
 let breatheInterval;
-
 const breatheAudio = new Audio("assets/audio/nafas-manual.mp3");
 breatheAudio.volume = 0.3;
-
 function startBreathing() {
   const circle = document.getElementById("breathe-circle");
   const text = document.getElementById("breathe-text");
   const sub = document.getElementById("breathe-sub");
-
   if (isBreathing) {
     clearInterval(breatheInterval);
     isBreathing = false;
@@ -690,28 +580,21 @@ function startBreathing() {
     circle.style.opacity = "0.2";
     text.classList.remove("text-white");
     text.classList.add("text-sage-800");
-
     breatheAudio.pause();
     breatheAudio.currentTime = 0;
-
     return;
   }
-
   isBreathing = true;
-
   text.innerText = "Tarik...";
   sub.innerText = "Lewat Hidung";
   circle.style.transform = "scale(1.5)";
   circle.style.opacity = "0.6";
-
   breatheAudio.play();
-
   let phase = "inhale";
   breatheInterval = setInterval(() => {
     breatheAudio.pause();
     breatheAudio.currentTime = 0;
     breatheAudio.play();
-
     if (phase === "inhale") {
       text.innerText = "Hembus...";
       sub.innerText = "Lewat Mulut";
@@ -733,11 +616,9 @@ function analyzeSymptoms() {
   const physicalEl = document.getElementById("physicalSymptom");
   const mentalEl = document.getElementById("mentalSymptom");
   const resultBox = document.getElementById("recommendationResult");
-
   if (!physicalEl || !mentalEl || !resultBox) return;
   const physical = physicalEl.value;
   const mental = mentalEl.value;
-
   if (!physical || !mental) {
     resultBox.classList.remove("hidden");
     resultBox.innerHTML = `
@@ -747,16 +628,12 @@ function analyzeSymptoms() {
             </div>`;
     return;
   }
-
-  // Logic Analisis
   let diagnosis = "Gangguan Psikosomatis Umum";
-  let desc =
-    "Terdeteksi ketidakseimbangan antara respons tubuh terhadap beban pikiran.";
+  let desc = "Terdeteksi ketidakseimbangan antara respons tubuh terhadap beban pikiran.";
   let riskText = "Rendah";
   let riskClass = "bg-sage-100 text-sage-600 border-sage-200";
   let recommendation = "Konsultasi Screening Umum";
   let doctorType = "Dokter Umum";
-
   if (physical === "maag" && (mental === "stres" || mental === "cemas")) {
     diagnosis = "Gastritis Psikosomatis";
     desc = "Stres memicu saraf vagus meningkatkan asam lambung secara drastis.";
@@ -764,29 +641,21 @@ function analyzeSymptoms() {
     riskClass = "bg-yellow-100 text-yellow-700 border-yellow-200";
     recommendation = "Paket Gastric-Calm";
     doctorType = "Internis + Hypnotherapy";
-  } else if (
-    (physical === "gigi" || physical === "headache") &&
-    mental === "stres"
-  ) {
+  } else if ((physical === "gigi" || physical === "headache") && mental === "stres") {
     diagnosis = "Tension & Bruxism";
     desc = "Otot rahang dan leher menegang akibat penekanan emosi bawah sadar.";
     riskText = "Menengah";
     riskClass = "bg-orange-100 text-orange-700 border-orange-200";
     recommendation = "Terapi Dental-Relief";
     doctorType = "Dokter Gigi (TMJ)";
-  } else if (
-    physical === "jantung" &&
-    (mental === "cemas" || mental === "burnout")
-  ) {
+  } else if (physical === "jantung" && (mental === "cemas" || mental === "burnout")) {
     diagnosis = "Cardiac Anxiety";
-    desc =
-      "Respons 'fight or flight' memacu jantung berlebih. Butuh penanganan segera.";
+    desc = "Respons 'fight or flight' memacu jantung berlebih. Butuh penanganan segera.";
     riskText = "Tinggi";
     riskClass = "bg-red-100 text-red-700 border-red-200";
     recommendation = "Pemeriksaan Jantung & Pikiran";
     doctorType = "Kardiolog + Psikiater";
   }
-
   resultBox.classList.remove("hidden");
   resultBox.innerHTML = `
         <div class="mt-4 border border-sage-200 rounded-2xl overflow-hidden shadow-sm bg-white animate-fade-in-up">
@@ -825,21 +694,16 @@ function analyzeSymptoms() {
             </div>
         </div>
     `;
-
   setTimeout(() => {
     const autoBtn = document.getElementById("autoQueueBtn");
     const queueBtn = document.getElementById("takeQueueBtn");
-
     if (autoBtn && queueBtn) {
       autoBtn.addEventListener("click", () => {
         queueBtn.scrollIntoView({ behavior: "smooth", block: "center" });
         setTimeout(() => {
           queueBtn.click();
           queueBtn.classList.add("ring-2", "ring-sage-500");
-          setTimeout(
-            () => queueBtn.classList.remove("ring-2", "ring-sage-500"),
-            1000
-          );
+          setTimeout(() => queueBtn.classList.remove("ring-2", "ring-sage-500"), 1000);
         }, 600);
       });
     }
@@ -847,39 +711,54 @@ function analyzeSymptoms() {
 }
 
 // =============================
-// INIT
+// 8. FITUR SLIDER & REVISI ANATOMI
 // =============================
-document.addEventListener("DOMContentLoaded", () => {
-  renderDoctors();
-  renderServices();
-  setupTabSwitching();
-  setupCostEstimator();
-  checkSessionStatus(); // Cek status antrean saat load
 
-  const queueBtn = document.getElementById("takeQueueBtn");
-  const navbarQueueBtn = document.getElementById("navbarQueueBtn");
+// === SLIDER DATA ===
+const eduSlides = [
+    {
+        img: "assets/img/slide-1.jpg", 
+        title: "Patah Hati = Patah Tulang?",
+        category: "Neuroscience",
+        myth: "Ah, itu cuma perasaanmu saja. Jangan lebay.",
+        fact: "Scan fMRI membuktikan otak tidak bisa membedakan sakit hati (penolakan sosial) dan patah tulang. Keduanya mengaktifkan bagian otak yang sama.",
+        tips: "Minum air hangat bisa sedikit meredakan sensasi nyeri fisik ini karena menenangkan saraf vagus."
+    },
+    {
+        img: "assets/img/slide-2.jpg",
+        title: "Siapa Lebih Sering Selingkuh?",
+        category: "Statistik Psikologi",
+        myth: "Pria pasti selingkuh karena nafsu, wanita karena perasaan.",
+        fact: "Riset terbaru menunjukkan celah gender makin menipis. Alasan utama kini adalah Micro-Cheating (selingkuh emosional) untuk validasi instan.",
+        tips: "Cek 'Screen Time' pasangan bukan untuk memata-matai, tapi untuk evaluasi kualitas waktu bersama."
+    },
+    {
+        img: "assets/img/slide-3.jpg",
+        title: "Sekali Selingkuh, Tetap Selingkuh?",
+        category: "Perilaku Manusia",
+        myth: "Pelaku selingkuh tidak akan pernah berubah (Once a cheater, always a cheater).",
+        fact: "Tidak selalu! Pelaku yang melakukan 'Pengakuan Radikal' (jujur tanpa ditanya) memiliki peluang sukses 70% untuk pulih.",
+        tips: "Lihat usahanya: Apakah dia transparan sukarela atau hanya saat didesak?"
+    },
+    {
+        img: "assets/img/slide-4.jpg",
+        title: "Kamu Tidak Gila, Kamu Dimanipulasi",
+        category: "Manipulasi",
+        myth: "Aku pelupa banget ya? Kok aku selalu salah ingat kejadian?",
+        fact: "Jika pasangan sering berkata 'Itu nggak pernah terjadi', itu teknik Gaslighting. Tujuannya membuatmu meragukan kewarasanmu sendiri.",
+        tips: "Mulai catat kejadian penting di jurnal/notes HP sebagai bukti realitasmu."
+    },
+    {
+        img: "assets/img/slide-5.jpg",
+        title: "Waktu Menyembuhkan Luka?",
+        category: "Healing",
+        myth: "Time heals all wounds (Waktu menyembuhkan segalanya).",
+        fact: "Salah. Waktu hanya memudarkan ingatan. Trauma yang didiamkan akan menjadi 'Luka Bernanah' di alam bawah sadar.",
+        tips: "Jangan cuma menunggu. Lakukan aksi aktif seperti konseling atau journaling."
+    }
+];
 
-  // === BAGIAN YANG DIPERBAIKI ===
-  // Mengganti 'handleTakeQueue' menjadi 'openQueueModal'
-  
-  if (queueBtn) {
-    queueBtn.addEventListener("click", openQueueModal);
-  }
-
-  if (navbarQueueBtn) {
-    navbarQueueBtn.addEventListener("click", openQueueModal);
-  }
-  // ==============================
-
-  const analyzeBtn = document.getElementById("analyzeBtn");
-  if (analyzeBtn) {
-    analyzeBtn.addEventListener("click", analyzeSymptoms);
-  }
-});
-
-// =============================
-// REVISI: DATA ANATOMI (5 TITIK)
-// =============================
+// === ANATOMI DATA ===
 const anatomyData = {
     kepala: {
         title: "Tension-Type Headache",
@@ -917,7 +796,7 @@ const anatomyData = {
         color: "border-yellow-500"
     },
     tenggorokan: {
-        title: "Globus Pharyngis", /* DULU: Leher & Tenggorokan */
+        title: "Globus Pharyngis", 
         desc: "Sensasi ada ganjalan di leher atau susah menelan. Seringkali ini tanda ada ucapan atau emosi yang ingin disampaikan tapi tertahan (repressed expression).",
         tip: "Latihan bernyanyi (humming) atau menulis jurnal untuk melepas emosi.",
         icon: '<i class="fa-solid fa-head-side-cough text-purple-500"></i>',
@@ -931,7 +810,7 @@ const anatomyData = {
         color: "border-stone-500"
     },
     lutut: {
-        title: "Psychosomatic Knee Pain", /* DULU: Lutut & Kaki */
+        title: "Psychosomatic Knee Pain", 
         desc: "Lutut mewakili kemampuan kita untuk membungkuk dan bergerak. Sakit lutut tanpa cedera bisa menandakan ketakutan akan masa depan atau ego yang terlalu kaku.",
         tip: "Lakukan peregangan kaki ringan dan afirmasi positif: 'Saya aman untuk melangkah maju'.",
         icon: '<i class="fa-solid fa-person-walking-arrow-right text-blue-600"></i>',
@@ -939,84 +818,15 @@ const anatomyData = {
     }
 };
 
-function showAnatomyInfo(part) {
-    const data = anatomyData[part];
-    const box = document.getElementById("anatomyInfoBox");
-    const defaultContent = document.getElementById("defaultAnatomyContent");
-    const dynamicContent = document.getElementById("dynamicAnatomyContent");
-
-    if (!data || !box) return;
-
-    // Elements
-    document.getElementById("anatomyTitle").textContent = data.title;
-    document.getElementById("anatomyDesc").textContent = data.desc;
-    document.getElementById("anatomyTip").textContent = data.tip;
-    document.getElementById("anatomyIcon").innerHTML = data.icon;
-
-    // Transition Logic
-    defaultContent.classList.add("hidden");
-    dynamicContent.classList.remove("hidden");
-    
-    // Reset Animation
-    dynamicContent.classList.remove("animate-fade-in-up");
-    void dynamicContent.offsetWidth; // Trigger Reflow
-    dynamicContent.classList.add("animate-fade-in-up");
-
-    // Dynamic Border Color
-    box.className = `bg-white/90 p-8 rounded-3xl border-l-8 shadow-lg min-h-[300px] flex flex-col justify-center transition-all duration-300 ${data.color}`;
-}
-
-// ============================================
-// 8. FITUR SLIDER (AUTO + MANUAL DRAG) & MODAL
-// ============================================
-
-const eduSlides = [
-    {
-        img: "assets/img/slide-1.jpg",
-        title: "Teknik Grounding 5-4-3-2-1",
-        category: "Mental Health",
-        desc: "Saat cemas menyerang, gunakan panca indera untuk kembali ke saat ini. Cari 5 benda yang bisa dilihat, 4 diraba, 3 didengar, 2 dicium, dan 1 dirasakan. Teknik ini memutus siklus panik di otak secara instan.",
-        tips: "Lakukan latihan ini kapan saja kamu merasa jantung berdebar tanpa sebab yang jelas."
-    },
-    {
-        img: "assets/img/slide-2.jpg",
-        title: "Sakit Kepala? Cek Minummu!",
-        category: "Fisik",
-        desc: "Kurang minum bukan hanya membuat haus, tapi menurunkan konsentrasi dan memicu sakit kepala tegang (Tension Headache). Otak kita terdiri dari 75% air, kehilangan sedikit saja cairan akan membuat emosi tidak stabil.",
-        tips: "Minum segelas air putih hangat setiap bangun tidur untuk rehidrasi otak."
-    },
-    {
-        img: "assets/img/slide-3.jpg",
-        title: "Makanan Penjaga Mood",
-        category: "Nutrisi",
-        desc: "Apa yang kamu makan mempengaruhi perasaanmu (Gut-Brain Axis). Makanan tinggi gula bisa memberikan energi instan tapi menyebabkan 'sugar crash' yang bikin lemas. Sayuran hijau kaya magnesium yang menenangkan saraf.",
-        tips: "Ganti camilan manis dengan buah potong, kacang almond, atau dark chocolate."
-    },
-    {
-        img: "assets/img/slide-4.jpg",
-        title: "Susah Tidur? Matikan Layar",
-        category: "Lifestyle",
-        desc: "Paparan cahaya biru (blue light) dari HP menekan hormon melatonin, membuatmu susah tidur nyenyak. Kualitas tidur yang buruk adalah pemicu utama stres kronis, burnout, dan kecemasan berlebih.",
-        tips: "Terapkan 'No Screen Rule' 1 jam sebelum tidur. Ganti dengan membaca buku."
-    },
-    {
-        img: "assets/img/slide-5.jpg",
-        title: "Jurnal untuk Kesehatan Mental",
-        category: "Emosi",
-        desc: "Menuangkan isi kepala ke atas kertas (Journaling) terbukti ampuh mengurai benang kusut di pikiran. Menulis tentang perasaan dan pengalaman membantu memproses emosi serta mengurangi stres.",
-        tips: "Luangkan 10 menit setiap malam untuk menulis tiga hal yang kamu syukuri hari ini."
-    }
-];
-
-// --- [BAGIAN INI DITAMBAHKAN/BARU] ---
+// === GLOBAL VARIABLES ===
 let currentSlideIndex = 0;
 let slideInterval;
-let isDown = false;      // Cek klik mouse
-let startX;              // Posisi awal kursor
-let scrollLeft;          // Posisi awal scroll
-let isDragging = false;  // Cek sedang geser atau tidak
+let isDown = false;      
+let startX;              
+let scrollLeft;          
+let isDragging = false;  
 
-// --- [BAGIAN INI DIREVISI TOTAL] ---
+// === SLIDER INIT FUNCTION ===
 function initEduSlider() {
     const sliderContainer = document.getElementById('eduSlider');
     const track = document.getElementById('eduSlidesTrack');
@@ -1031,7 +841,7 @@ function initEduSlider() {
     eduSlides.forEach((slide, index) => {
         // Gambar
         const imgDiv = document.createElement('div');
-        imgDiv.className = "min-w-full h-full bg-cover bg-center snap-center shrink-0 pointer-events-none"; // pointer-events-none biar gambar gak ke-drag browser
+        imgDiv.className = "min-w-full h-full bg-cover bg-center snap-center shrink-0 pointer-events-none"; 
         imgDiv.style.backgroundImage = `url('${slide.img}')`;
         track.appendChild(imgDiv);
 
@@ -1045,20 +855,17 @@ function initEduSlider() {
         indicators.appendChild(dot);
     });
 
-    // === LOGIKA DRAG MOUSE (LAPTOP) ===
-    
-    // 1. Mouse Ditekan
+    // Event Listeners Slider
     sliderContainer.addEventListener('mousedown', (e) => {
         isDown = true;
         isDragging = false;
         sliderContainer.classList.add('cursor-grabbing');
-        sliderContainer.classList.remove('snap-x', 'scroll-smooth'); // Matikan snap biar gerakan mulus
+        sliderContainer.classList.remove('snap-x', 'scroll-smooth'); 
         startX = e.pageX - sliderContainer.offsetLeft;
         scrollLeft = sliderContainer.scrollLeft;
-        clearInterval(slideInterval); // Stop auto play
+        clearInterval(slideInterval); 
     });
 
-    // 2. Mouse Keluar Area
     sliderContainer.addEventListener('mouseleave', () => {
         isDown = false;
         sliderContainer.classList.remove('cursor-grabbing');
@@ -1066,36 +873,27 @@ function initEduSlider() {
         startSlideInterval();
     });
 
-    // 3. Mouse Dilepas (Selesai Klik)
     sliderContainer.addEventListener('mouseup', (e) => {
         isDown = false;
         sliderContainer.classList.remove('cursor-grabbing');
         sliderContainer.classList.add('snap-x', 'scroll-smooth');
         startSlideInterval();
-
-        // KUNCI: Cek apakah user tadi menggeser?
         if (!isDragging) {
-            openEduModal(); // Kalau TIDAK geser, berarti KLIK -> Buka Modal
+            openEduModal(); 
         }
     });
 
-    // 4. Mouse Bergerak
     sliderContainer.addEventListener('mousemove', (e) => {
         if (!isDown) return;
         e.preventDefault();
-        
         const x = e.pageX - sliderContainer.offsetLeft;
-        const walk = (x - startX) * 2; // Kecepatan geser
-        
-        // Kalau geser lebih dari 5px, anggap sebagai Dragging
+        const walk = (x - startX) * 2; 
         if (Math.abs(walk) > 5) {
             isDragging = true;
         }
-
         sliderContainer.scrollLeft = scrollLeft - walk;
     });
 
-    // === LOGIKA SCROLL NORMAL ===
     sliderContainer.addEventListener('scroll', () => {
         const scrollPos = sliderContainer.scrollLeft;
         const slideWidth = sliderContainer.offsetWidth;
@@ -1111,8 +909,7 @@ function initEduSlider() {
     updateSlideInfo(0);
 }
 
-// --- [FUNGSI DI BAWAH INI TETAP/SAMA SEPERTI SEBELUMNYA] ---
-
+// === SLIDER HELPER FUNCTIONS ===
 function updateSlideInfo(index) {
     const safeIndex = index % eduSlides.length;
     const titleEl = document.getElementById('slideTitleDisplay');
@@ -1155,15 +952,13 @@ function startSlideInterval() {
 function openEduModal() {
     const modal = document.getElementById('eduModal');
     const data = eduSlides[currentSlideIndex];
-    
     if(!data) return;
-
     document.getElementById('modalImg').src = data.img;
     document.getElementById('modalCategory').textContent = data.category;
     document.getElementById('modalTitle').textContent = data.title;
-    document.getElementById('modalDesc').textContent = data.desc;
+    document.getElementById('modalMyth').textContent = `"${data.myth}"`;
+    document.getElementById('modalFact').textContent = data.fact;
     document.getElementById('modalTips').textContent = data.tips;
-
     modal.classList.remove('hidden');
     clearInterval(slideInterval);
 }
@@ -1174,56 +969,158 @@ window.closeEduModal = function() {
     startSlideInterval();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    initEduSlider();
-});
+// === ANATOMI HELPER FUNCTIONS ===
+function showAnatomyInfo(part) {
+    const data = anatomyData[part];
+    const box = document.getElementById("anatomyInfoBox");
+    const defaultContent = document.getElementById("defaultAnatomyContent");
+    const dynamicContent = document.getElementById("dynamicAnatomyContent");
 
-// ==========================================
-// 10. REVISI ANATOMI: GAMBAR & ANIMASI POP
-// ==========================================
+    if (!data || !box) return;
 
-// Fungsi Wrapper: Menangani Klik Titik
-function triggerAnatomyAnim(event, part, iconClass) {
-    // 1. Tampilkan Info (Fungsi Lama)
+    document.getElementById("anatomyTitle").textContent = data.title;
+    document.getElementById("anatomyDesc").textContent = data.desc;
+    document.getElementById("anatomyTip").textContent = data.tip;
+    document.getElementById("anatomyIcon").innerHTML = data.icon;
+
+    defaultContent.classList.add("hidden");
+    dynamicContent.classList.remove("hidden");
+    dynamicContent.classList.remove("animate-fade-in-up");
+    void dynamicContent.offsetWidth; 
+    dynamicContent.classList.add("animate-fade-in-up");
+
+    box.className = `bg-white/90 p-8 rounded-3xl border-l-8 shadow-lg min-h-[300px] flex flex-col justify-center transition-all duration-300 ${data.color}`;
+}
+
+window.triggerAnatomyAnim = function(event, part, iconClass) {
     showAnatomyInfo(part);
-
-    // 2. Jalankan Animasi Pop-out
     createFloatingIcon(event, iconClass);
 }
 
-// Fungsi Membuat Ikon Melayang
 function createFloatingIcon(event, iconClass) {
     const container = document.getElementById('animContainer');
     if (!container) return;
-
-    // Buat elemen Ikon
     const icon = document.createElement('i');
-    // Gabungkan class FontAwesome dengan class animasi kita
     icon.className = `fa-solid ${iconClass} text-4xl absolute animate-float-up`;
-    
-    // Tentukan Warna berdasarkan icon (Opsional, biar cantik)
     if (iconClass.includes('heart')) icon.classList.add('text-red-500');
     else if (iconClass.includes('brain')) icon.classList.add('text-sage-600');
     else if (iconClass.includes('fire')) icon.classList.add('text-yellow-500');
     else icon.classList.add('text-nexus-teal');
-
-    // Posisi Ikon (Mengikuti posisi klik mouse relative terhadap container)
-    // Kita ambil posisi tombol yang diklik, bukan posisi mouse, agar akurat di tengah tombol
     const rect = event.currentTarget.getBoundingClientRect();
     const containerRect = container.getBoundingClientRect();
-
-    // Hitung posisi relatif di dalam container gambar
     const left = rect.left - containerRect.left + (rect.width / 2);
     const top = rect.top - containerRect.top;
-
     icon.style.left = `${left}px`;
     icon.style.top = `${top}px`;
-
-    // Masukkan ke DOM
     container.appendChild(icon);
-
-    // Hapus elemen setelah animasi selesai (1 detik)
     setTimeout(() => {
         icon.remove();
     }, 1000);
+}
+
+// =============================
+// INIT (SINGLE ENTRY POINT)
+// =============================
+document.addEventListener("DOMContentLoaded", () => {
+  renderDoctors();
+  renderServices();
+  setupTabSwitching();
+  setupCostEstimator();
+  checkSessionStatus(); 
+  initEduSlider(); // Slider diinisialisasi di sini juga
+
+  const queueBtn = document.getElementById("takeQueueBtn");
+  const navbarQueueBtn = document.getElementById("navbarQueueBtn");
+  if (queueBtn) queueBtn.addEventListener("click", openQueueModal);
+  if (navbarQueueBtn) navbarQueueBtn.addEventListener("click", openQueueModal);
+
+  const analyzeBtn = document.getElementById("analyzeBtn");
+  if (analyzeBtn) analyzeBtn.addEventListener("click", analyzeSymptoms);
+});
+
+// ==========================================
+// 11. FITUR ARTIKEL MODAL (READ MORE)
+// ==========================================
+
+// Data Lengkap Artikel (Bisa kamu edit isinya sesuka hati)
+const fullArticles = [
+    {
+        title: "Bukan 'Baper', Ini PISD: Sains di Balik Trauma Perselingkuhan",
+        category: "Neuroscience",
+        img: "assets/img/artikel1.avif",
+        content: `
+            <p class="font-bold text-sage-800">Hook: Pernahkah dada Anda sesak mendadak hanya karena melihat notifikasi HP? Itu bukan lebay. Itu adalah respons biologis otak terhadap ancaman.</p>
+            <br>
+            <p>Banyak korban perselingkuhan menyalahkan diri sendiri karena merasa terlalu sensitif atau sulit *move on*. Namun, studi klinis terbaru dalam bidang neuroscience menyebut kondisi ini sebagai <strong>Post-Infidelity Stress Disorder (PISD)</strong>.</p>
+            <p>Secara medis, otak korban perselingkuhan menunjukkan aktivitas yang mirip dengan tentara yang mengalami PTSD (Gangguan Stres Pasca Trauma). Amigdala (pusat rasa takut) menjadi hiperaktif, membuat Anda selalu dalam mode waspada (*hyper-vigilance*).</p>
+            <ul class="list-disc pl-5 space-y-1 bg-red-50 p-4 rounded-xl border border-red-100">
+                <li>Insomnia parah atau mimpi buruk.</li>
+                <li>Flashback mendadak saat melihat pemicu (tempat, lagu, tanggal).</li>
+                <li>Gejala fisik: Maag, sakit kepala tegang, hingga sesak napas.</li>
+            </ul>
+            <p>Di Soulvaya, kami tidak hanya meminta Anda untuk "sabar". Kami menggunakan metode berbasis riset untuk menenangkan sistem saraf Anda terlebih dahulu, memvalidasi rasa sakit Anda secara medis, baru kemudian melangkah ke pemulihan hati.</p>
+        `
+    },
+    {
+        title: "Takut Aib Terbongkar? Kenapa Konseling Anonim Lebih Aman",
+        category: "Privasi",
+        img: "assets/img/artikel2.avif",
+        content: `
+            <p class="font-bold text-sage-800">"Mau cerita tapi takut teman ember?" atau "Takut pasangan tahu Anda ke psikolog?"</p>
+            <br>
+            <p>Hambatan terbesar korban perselingkuhan atau masalah rumah tangga untuk pulih bukanlah biaya, melainkan <strong>Rasa Malu (Shame)</strong>. Budaya kita seringkali menempatkan "menjaga aib keluarga" di atas kesehatan mental individu.</p>
+            <p>Soulvaya memecahkan masalah ini dengan sistem <strong>Enkripsi Tingkat Tinggi & Anonimitas Total</strong>:</p>
+            <ul class="list-disc pl-5 space-y-1">
+                <li><strong>No Real Name Required:</strong> Anda bisa menggunakan nama samaran saat sesi konseling online.</li>
+                <li><strong>End-to-End Encryption:</strong> Chat dan sesi video tidak direkam dan terhapus otomatis setelah sesi selesai.</li>
+                <li><strong>Data Terpisah:</strong> Rekam medis Anda tidak terhubung dengan data administrasi publik.</li>
+            </ul>
+            <p>Anda bisa bercerita sebebas-bebasnya, menangis, marah, atau menumpahkan segala kekesalan tentang konflik rumah tangga tanpa takut data bocor atau dihakimi lingkungan sosial. Ruang aman Anda ada di sini.</p>
+        `
+    },
+    {
+        title: "P3K Emosional: Teknik 2 Menit Redakan Panik di Kantor",
+        category: "Self-Help",
+        img: "assets/img/artikel3.jpg",
+        content: `
+            <p class="font-bold text-sage-800">Serangan panik tidak menunggu jam pulang kerja. Ia bisa datang saat meeting penting atau di tengah kemacetan.</p>
+            <br>
+            <p>Saat ingatan buruk (*flashback*) datang, otak logika Anda (Prefrontal Cortex) 'dibajak' oleh emosi. Akibatnya, Anda tidak bisa berpikir jernih, tangan gemetar, dan ingin kabur.</p>
+            <p>Gunakan fitur Panduan Self-Help kami yang dirancang untuk kondisi darurat:</p>
+            <div class="space-y-4">
+                <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                    <h4 class="font-bold text-blue-800 mb-1">1. Butterfly Hug</h4>
+                    <p class="text-xs">Silangkan tangan di dada, tepuk pundak kiri dan kanan bergantian secara perlahan seperti kepakan sayap kupu-kupu. Ini menyeimbangkan otak kiri dan kanan.</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+                    <h4 class="font-bold text-green-800 mb-1">2. Teknik Grounding 5-4-3-2-1</h4>
+                    <p class="text-xs">Sebutkan 5 benda yang dilihat, 4 yang bisa diraba, 3 suara yang didengar, 2 bau yang dicium, 1 rasa di lidah. Ini memaksa otak kembali ke "saat ini".</p>
+                </div>
+            </div>
+            <p class="mt-4">Latihan praktis ini dirancang fleksibel untuk dilakukan kapan saja dan di mana saja guna mengembalikan kendali diri Anda dalam hitungan menit.</p>
+        `
+    }
+];
+
+function openArticleModal(index) {
+    const modal = document.getElementById('articleModal');
+    const data = fullArticles[index];
+    
+    if(!data) return;
+
+    // Isi konten ke dalam elemen HTML modal
+    document.getElementById('artModalImg').src = data.img;
+    document.getElementById('artModalBadge').textContent = data.category;
+    document.getElementById('artModalTitle').textContent = data.title;
+    document.getElementById('artModalContent').innerHTML = data.content; // Pakai innerHTML biar bisa render paragraf & list
+
+    // Tampilkan modal
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden'; // Matikan scroll body belakang
+}
+
+function closeArticleModal() {
+    const modal = document.getElementById('articleModal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto'; // Hidupkan scroll body kembali
 }
