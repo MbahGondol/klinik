@@ -148,7 +148,7 @@
         </div>
 
         <div class="hidden sm:flex items-center gap-2 text-xs">
-          <button id="navbarQueueBtn" class="cta-button">Ambil Antrean</button>
+          <button id="navbarQueueBtn" class="cta-button">Akses Sesi Privat</button>
         </div>
       </div>
     </nav>
@@ -312,7 +312,7 @@
                   id="takeQueueBtn"
                   class="w-full mt-4 py-3 rounded-xl bg-gradient-to-r from-sage-600 to-sage-500 text-white text-sm font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
                 >
-                  Ambil Antrean Sekarang
+                  Mulai Konseling Privat 
                 </button>
               </div>
 
@@ -338,40 +338,32 @@
 
                   <div class="space-y-3 text-sm">
                     <div>
-                      <label
-                        for="physicalSymptom"
-                        class="block text-xs font-medium text-gray-600 mb-1"
-                        >Keluhan Fisik Utama</label
-                      >
-                      <select
-                        id="physicalSymptom"
-                        class="w-full p-2 rounded-lg border border-sage-200 text-xs bg-sage-50 focus:outline-none focus:ring-1 focus:ring-sage-500 focus:border-sage-500"
-                      >
-                        <option value="">Pilih Keluhan Fisik</option>
-                        <option value="headache">Sakit Kepala / Migrain</option>
-                        <option value="maag">Maag / GERD</option>
-                        <option value="gigi">Gigi Menggeretak</option>
-                        <option value="jantung">Jantung Berdebar</option>
-                      </select>
-                    </div>
+    <label for="physicalSymptom" class="block text-xs font-medium text-gray-600 mb-1">
+        Sensasi Tubuh yang Dirasakan
+    </label>
+    <select id="physicalSymptom"
+        class="w-full p-2 rounded-lg border border-sage-200 text-xs bg-sage-50 focus:outline-none focus:ring-1 focus:ring-sage-500 focus:border-sage-500">
+        <option value="">Pilih Sensasi Tubuh...</option>
+        <option value="headache">Kepala Terasa Berat / Pening</option>
+        <option value="maag">Perut Mual / Nyeri Ulu Hati</option>
+        <option value="gigi">Rahang Kaku / Tegang</option>
+        <option value="jantung">Dada Sesak / Berdebar</option>
+    </select>
+</div>
 
-                    <div>
-                      <label
-                        for="mentalSymptom"
-                        class="block text-xs font-medium text-gray-600 mb-1"
-                        >Kondisi Pikiran Saat Ini</label
-                      >
-                      <select
-                        id="mentalSymptom"
-                        class="w-full p-2 rounded-lg border border-sage-200 text-xs bg-sage-50 focus:outline-none focus:ring-1 focus:ring-sage-500 focus:border-sage-500"
-                      >
-                        <option value="">Pilih Kondisi Pikiran</option>
-                        <option value="stres">Stres Kerja</option>
-                        <option value="cemas">Cemas / Anxiety</option>
-                        <option value="tidur">Susah Tidur</option>
-                        <option value="burnout">Burnout</option>
-                      </select>
-                    </div>
+<div>
+    <label for="mentalSymptom" class="block text-xs font-medium text-gray-600 mb-1">
+        Beban Pikiran Utama
+    </label>
+    <select id="mentalSymptom"
+        class="w-full p-2 rounded-lg border border-sage-200 text-xs bg-sage-50 focus:outline-none focus:ring-1 focus:ring-sage-500 focus:border-sage-500">
+        <option value="">Pilih Kondisi Hati...</option>
+        <option value="stres">Tertekan / Banyak Pikiran</option>
+        <option value="cemas">Cemas / Takut Tanpa Sebab</option>
+        <option value="tidur">Sulit Tidur / Mimpi Buruk</option>
+        <option value="burnout">Lelah Mental / Hampa</option>
+    </select>
+</div>
 
                     <button
                       id="analyzeBtn"
@@ -392,15 +384,16 @@
           <section id="edukasi" class="mt-16 mb-12 scroll-mt-24">
     
     <div class="text-center mb-8 animate-fade-in-up">
-        <span class="text-[10px] font-bold tracking-widest text-nexus-teal uppercase bg-teal-50 px-3 py-1 rounded-full border border-teal-100 mb-3 inline-block">
-            Interactive Body Map
-        </span>
-        <h2 class="text-3xl font-bold text-sage-900">Tubuhmu Berbicara</h2>
-        <p class="text-sm text-gray-500 max-w-lg mx-auto mt-2">
-            Emosi yang terpendam seringkali bermanifestasi menjadi rasa sakit fisik.
-            <span class="text-sage-600 font-medium">Klik titik berkedip</span> pada gambar di bawah.
-        </p>
-    </div>
+    <span
+        class="text-[10px] font-bold tracking-widest text-nexus-teal uppercase bg-teal-50 px-3 py-1 rounded-full border border-teal-100 mb-3 inline-block">
+        Trauma Mapping
+    </span>
+    <h2 class="text-3xl font-bold text-sage-900">Dimana Tubuhmu Menyimpan Luka?</h2>
+    <p class="text-sm text-gray-500 max-w-lg mx-auto mt-2">
+        Trauma emosional, pengkhianatan, dan kesedihan tidak hanya ada di pikiran. 
+        Tubuh merekam segalanya. <span class="text-sage-600 font-medium">Klik titik berkedip</span> untuk memahami pesan yang dikirim jiwamu.
+    </p>
+</div>
 
     <div class="grid md:grid-cols-2 gap-6 items-stretch max-w-5xl mx-auto">
 
@@ -422,13 +415,7 @@
     </div>
 </div>
 
-<div class="anatomy-group top-[18%] left-[50%] text-purple-500" onclick="triggerAnatomyAnim(event, 'tenggorokan', 'fa-head-side-cough')">
-    <div class="anatomy-ring absolute -translate-x-1/2 -translate-y-1/2"></div>
-    <div class="hidden md:flex flex-row-reverse items-center absolute right-2 top-0 -translate-y-1/2">
-        <div class="anatomy-line"></div>
-        <div class="anatomy-label text-purple-600">Leher</div>
-    </div>
-</div>
+
 
 <div class="anatomy-group top-[22%] left-[56%] text-orange-500" onclick="triggerAnatomyAnim(event, 'bahu', 'fa-person-walking-luggage')">
     <div class="anatomy-ring absolute -translate-x-1/2 -translate-y-1/2"></div>
@@ -461,22 +448,30 @@
         <div class="anatomy-label text-yellow-600">Lambung</div>
     </div>
 </div>
-
-<div class="anatomy-group top-[44%] left-[50%] text-stone-500" onclick="triggerAnatomyAnim(event, 'usus', 'fa-bacteria')">
-    <div class="anatomy-ring absolute -translate-x-1/2 -translate-y-1/2"></div>
-    <div class="hidden md:flex items-center absolute left-2 top-0 -translate-y-1/2">
-        <div class="anatomy-line"></div>
-        <div class="anatomy-label text-stone-600">Usus</div>
-    </div>
-</div>
-
-<div class="anatomy-group top-[73%] left-[46%] text-blue-600" onclick="triggerAnatomyAnim(event, 'lutut', 'fa-person-walking-arrow-right')">
+<div class="anatomy-group top-[19%] left-[50%] text-purple-500" onclick="triggerAnatomyAnim(event, 'leher', 'fa-bullhorn')">
     <div class="anatomy-ring absolute -translate-x-1/2 -translate-y-1/2"></div>
     <div class="hidden md:flex flex-row-reverse items-center absolute right-2 top-0 -translate-y-1/2">
         <div class="anatomy-line"></div>
-        <div class="anatomy-label text-blue-700">Lutut</div>
+        <div class="anatomy-label text-purple-600">Tenggorokan</div>
     </div>
 </div>
+
+<div class="anatomy-group top-[74%] left-[54%] text-sky-500" onclick="triggerAnatomyAnim(event, 'lutut', 'fa-person-walking')">
+    <div class="anatomy-ring absolute -translate-x-1/2 -translate-y-1/2"></div>
+    
+    <div class="hidden md:flex items-center absolute left-2 top-0 -translate-y-1/2">
+        <div class="anatomy-line w-8"></div> <div class="anatomy-label text-sky-600">Lutut</div>
+    </div>
+</div>
+
+<div class="anatomy-group top-[45%] left-[61%] text-indigo-500" onclick="triggerAnatomyAnim(event, 'tangan', 'fa-hand-fist')">
+    <div class="anatomy-ring absolute -translate-x-1/2 -translate-y-1/2"></div>
+    <div class="hidden md:flex items-center absolute left-2 top-0 -translate-y-1/2">
+        <div class="anatomy-line"></div>
+        <div class="anatomy-label text-indigo-600">Tangan</div>
+    </div>
+</div>
+
             </div>
             
             <div id="animContainer" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
@@ -675,60 +670,58 @@
         </div>
 
         <div id="terapi" class="spa-section hidden">
-          <div class="text-center mb-8">
-            <h2 id="terapiTitle" class="text-2xl font-bold text-sage-900">
-              Ruang Tenang Digital
-            </h2>
-            <p class="text-sm text-gray-500">
-              Kurangi kecemasan Anda sambil menunggu antrean. Ikuti irama
-              lingkaran di bawah.
-            </p>
-          </div>
-          <div class="flex flex-col items-center justify-center py-4">
-            <div
-              class="relative w-64 h-64 flex items-center justify-center cursor-pointer group select-none"
-              onclick="startBreathing()"
-            >
-              <div
-                id="breathe-circle"
-                class="breathe-transition absolute inset-0 bg-sage-500 rounded-full opacity-30 transform scale-100"
-              ></div>
+    <div class="text-center mb-8">
+        <h2 id="terapiTitle" class="text-2xl font-bold text-sage-900">
+            Ruang Tenang Digital
+        </h2>
+        <p class="text-sm text-gray-500">
+            Kurangi kecemasan Anda sambil menunggu antrean. Ikuti irama
+            lingkaran di bawah.
+        </p>
+    </div>
 
-              <div
-                id="inner-circle"
-                class="absolute inset-8 bg-sage-400 rounded-full opacity-40 animate-pulse"
-              ></div>
-
-              <div
-                class="absolute inset-0 rounded-full border-2 border-sage-400 border-dashed animate-spin-slow opacity-70"
-              ></div>
-
-              <div class="z-10 text-center pointer-events-none">
-                <span
-                  id="breathe-text"
-                  class="block text-xl font-bold text-sage-800 transition-all duration-500"
-                  >Mulai</span
-                >
-                <span
-                  id="breathe-sub"
-                  class="text-[10px] text-sage-500 uppercase tracking-widest mt-1"
-                  >Sentuh Lingkaran</span
-                >
-              </div>
+    <div class="flex flex-col items-center justify-center py-4">
+        <div class="relative w-64 h-64 flex items-center justify-center cursor-pointer group select-none"
+            onclick="startBreathing()">
+            <div id="breathe-circle"
+                class="breathe-transition absolute inset-0 bg-sage-500 rounded-full opacity-30 transform scale-100">
             </div>
-          </div>
-          <div class="text-center mt-8">
-            <div
-              id="timerDisplay"
-              class="text-lg font-semibold text-sage-800 mb-4 hidden"
-            >
-              Waktu Terapi: <span id="timerText">03:00</span>
+
+            <div id="inner-circle" class="absolute inset-8 bg-sage-400 rounded-full opacity-40 animate-pulse">
             </div>
-            <button id="finishSessionBtn" class="cta-button hidden">
-              Selesai Sesi
-            </button>
-          </div>
+
+            <div
+                class="absolute inset-0 rounded-full border-2 border-sage-400 border-dashed animate-spin-slow opacity-70">
+            </div>
+
+            <div class="z-10 text-center pointer-events-none">
+                <span id="breathe-text"
+                    class="block text-xl font-bold text-sage-800 transition-all duration-500">Mulai</span>
+                <span id="breathe-sub" class="text-[10px] text-sage-500 uppercase tracking-widest mt-1">Sentuh
+                    Lingkaran</span>
+            </div>
         </div>
+    </div>
+
+    <div class="text-center mt-8 space-y-4">
+        <div id="timerDisplay"
+            class="text-sm font-medium text-gray-500 bg-sage-50 inline-block px-4 py-2 rounded-lg border border-sage-200 hidden">
+            <i class="fa-regular fa-clock mr-1"></i> Estimasi Dokter Siap: <span id="timerText"
+                class="font-bold text-sage-800">03:00</span>
+        </div>
+
+        <a id="connectDoctorBtn" href="#" target="_blank"
+            class="hidden w-full max-w-sm mx-auto py-3.5 rounded-xl bg-green-500 text-white font-bold shadow-lg shadow-green-200 hover:bg-green-600 hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2 animate-bounce">
+            <i class="fa-brands fa-whatsapp text-xl"></i>
+            Hubungi Psikolog Sekarang
+        </a>
+
+        <button id="finishSessionBtn" onclick="finishSession()" 
+    class="hidden px-6 py-2 rounded-full border border-red-200 text-red-400 text-xs font-semibold hover:bg-red-50 hover:text-red-600 transition-colors mt-4">
+    <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Batalkan & Keluar
+</button>
+    </div>
+</div>
 
         <div id="htm" class="spa-section hidden">
           <div
@@ -1003,7 +996,6 @@
 </div>
 
 <div id="queueModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-nexus-dark/50 backdrop-blur-sm transition-opacity opacity-0">
-    
     <div class="bg-white rounded-3xl p-6 md:p-8 w-full max-w-md shadow-2xl transform scale-95 transition-transform duration-300 relative mx-4">
         
         <button onclick="closeQueueModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition">
@@ -1011,27 +1003,33 @@
         </button>
 
         <div class="text-center mb-6">
-            <h3 class="text-2xl font-bold text-sage-900">Ambil Nomor Antrean</h3>
-            <p class="text-sm text-gray-500 mt-2">Agar penanganan lebih tepat, pilih jenis keluhan utama Anda:</p>
+            <h3 class="text-2xl font-bold text-sage-900">Pilih Jalur Pemulihan</h3>
+            <p class="text-sm text-gray-500 mt-2">Agar kami bisa menghubungkan Anda dengan ahli yang tepat:</p>
         </div>
 
         <div class="grid grid-cols-2 gap-4">
-            
-            <button onclick="processQueue('fisik')" class="group p-4 rounded-2xl border-2 border-sage-100 hover:border-nexus-teal hover:bg-teal-50 transition-all duration-300 text-left">
+            <button onclick="processQueue('somatik')" class="group p-4 rounded-2xl border-2 border-sage-100 hover:border-nexus-teal hover:bg-teal-50 transition-all duration-300 text-left">
                 <div class="w-10 h-10 rounded-full bg-teal-100 text-nexus-teal flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-stethoscope"></i>
+                    <i class="fa-solid fa-person-rays"></i>
                 </div>
-                <h4 class="font-bold text-sage-800 text-sm">Poli Fisik</h4>
-                <p class="text-[10px] text-gray-500 mt-1 leading-snug">Sakit badan, gigi, maag, atau luka.</p>
+                <h4 class="font-bold text-sage-800 text-sm">Konseling Somatik</h4>
+                <p class="text-[10px] text-gray-500 mt-1 leading-snug">Untuk keluhan fisik akibat trauma (nyeri dada, maag, migrain).</p>
             </button>
 
-            <button onclick="processQueue('mental')" class="group p-4 rounded-2xl border-2 border-sage-100 hover:border-purple-400 hover:bg-purple-50 transition-all duration-300 text-left">
+            <button onclick="processQueue('psikologis')" class="group p-4 rounded-2xl border-2 border-sage-100 hover:border-purple-400 hover:bg-purple-50 transition-all duration-300 text-left">
                 <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-500 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-brain"></i>
+                    <i class="fa-solid fa-comments"></i>
                 </div>
-                <h4 class="font-bold text-sage-800 text-sm">Konseling</h4>
-                <p class="text-[10px] text-gray-500 mt-1 leading-snug">Stres, cemas, sulit tidur, burnout.</p>
+                <h4 class="font-bold text-sage-800 text-sm">Konseling Psikologis</h4>
+                <p class="text-[10px] text-gray-500 mt-1 leading-snug">Curhat aman, pemulihan duka, stres, & kecemasan.</p>
             </button>
+        </div>
+        
+        <div class="mt-6 pt-4 border-t border-gray-100 text-center">
+             <p class="text-[10px] text-gray-400 flex items-center justify-center gap-1">
+                <i class="fa-solid fa-lock text-sage-500"></i>
+                Privasi Anda dijamin 100% Aman & Anonim.
+            </p>
         </div>
     </div>
 </div>
