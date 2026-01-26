@@ -116,86 +116,124 @@
 }
 
 /* =========================================
-   7. ANATOMY INTERACTIVE STYLES
+   7. ANATOMY CALLOUT STYLE (Gaya Penunjuk Garis)
    ========================================= */
-.anatomy-point {
+
+/* Container Tombol Utama (Wrapper) */
+.anatomy-group {
     position: absolute;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: rgba(20, 184, 166, 0.9); /* Default Color */
-    border: 2px solid white;
+    display: flex;
+    align-items: center;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4);
     z-index: 20;
-    transform: translate(-50%, -50%); /* Center anchor point */
+    transition: all 0.3s ease;
+    /* Titik pusat transformasi di ujung titik */
+    transform-origin: center center; 
 }
 
-/* Efek Pulse/Ripple */
-.anatomy-point::before {
+/* Titik Cincin (Target Ring) */
+.anatomy-ring {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(2px);
+    border: 2px solid currentColor; /* Warna ngikut text parent */
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
+    position: relative;
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+/* Titik Tengah Kecil */
+.anatomy-ring::after {
     content: '';
     position: absolute;
-    inset: -8px;
+    top: 50%; left: 50%;
+    width: 4px; height: 4px;
+    background: white;
     border-radius: 50%;
-    background: inherit;
-    opacity: 0.4;
-    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-    z-index: -1;
+    transform: translate(-50%, -50%);
 }
 
-.anatomy-point:hover {
-    transform: translate(-50%, -50%) scale(1.3);
-    z-index: 30;
+/* Garis Penghubung (Hanya Desktop) */
+.anatomy-line {
+    height: 1px;
+    width: 0px; /* Default 0, memanjang saat hover/desktop */
+    background-color: currentColor; /* Warna sama dengan ring */
+    transition: width 0.4s ease;
+    opacity: 0.7;
+    margin: 0 2px;
 }
 
-/* Tooltip Hover */
-.anatomy-point .tooltip {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    background: #2F3E46;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 10px;
-    font-weight: 600;
+/* Teks Label (Hanya Desktop) */
+.anatomy-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease;
+    opacity: 0; /* Default sembunyi */
+    transform: translateX(-10px);
+    transition: all 0.4s ease;
 }
 
-.anatomy-point:hover .tooltip {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
+/* --- STATE HOVER & DESKTOP --- */
+
+/* Di Desktop, Teks & Garis Selalu Muncul (Opsional: atau pas hover aja) */
+@media (min-width: 768px) {
+    .anatomy-line { width: 40px; } /* Panjang garis */
+    .anatomy-label { opacity: 1; transform: translateX(0); }
+    
+    /* Hover Effect: Scale up */
+    .anatomy-group:hover .anatomy-ring { transform: scale(1.2); }
+    .anatomy-group:hover .anatomy-label { background: #2F3E46; color: white !important; }
 }
 
-/* Animasi Garis Scanning */
-@keyframes scan {
-    0% { transform: translateY(0); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { transform: translateY(100%); opacity: 0; } /* Asumsi tinggi container 100% */
-}
-
-.animate-scan {
-    /* Paksa render di GPU */
-    will-change: transform, opacity;
-    animation: scan 4s linear infinite;
-    /* Ubah posisi awal biar gak ganggu layout */
+/* Ripple Animation tetap ada */
+.anatomy-ring::before {
+    content: '';
     position: absolute;
-    top: 0; 
-    left: 0;
-    width: 100%;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    opacity: 0.3;
+    animation: ping 2s infinite;
 }
 
-/* Animasi Panah */
-@keyframes pulse-x {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(-5px); }
+/* =========================================
+   8. UTILITIES TAMBAHAN
+   ========================================= */
+/* Sembunyikan Scrollbar tapi tetap bisa discroll */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
 }
-.animate-pulse-x {
-    animation: pulse-x 1.5s ease-in-out infinite;
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* =========================================
+   9. ANIMASI ANATOMI POP-OUT
+   ========================================= */
+@keyframes floatUpFade {
+    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+    20% { transform: translate(-50%, -80%) scale(1.2); opacity: 1; }
+    100% { transform: translate(-50%, -200%) scale(1); opacity: 0; }
+}
+
+.animate-float-up {
+    animation: floatUpFade 1s ease-out forwards;
+    position: absolute;
+    z-index: 50;
+    pointer-events: none; /* Agar tidak mengganggu klik */
+}
+
+/* Memastikan tinggi card konsisten */
+.anatomy-card-height {
+    height: 450px; /* Tinggi fix agar kanan & kiri sama persis */
 }
